@@ -1,0 +1,640 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;600;800&family=Inter:wght@400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: "Inter", "sans-serif";
+
+  /* brand color #495057 */
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  /* color: #e03131; */
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: #e03131;
+}
+
+body {
+  height: auto;
+  background-color: #000;
+  /* background: radial-gradient(circle, black, white, black, grey, red); */
+  /* background: conic-gradient(
+    black 0%,
+    black 20%,
+    rgba(255, 0, 0, 0.641) 53%,
+    black 90%
+  ); */
+  /* background: linear-gradient(tan, red, black); */
+  background-image: url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2luZW1hfGVufDB8fDB8fHww");
+  background-size: cover;
+  background-position: center;
+}
+
+li {
+  list-style: none;
+}
+
+.navmenu {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.navmenu:hover {
+  color: red;
+}
+
+/* Header */
+
+header {
+  position: relative;
+  padding: 0.4rem 2rem;
+}
+
+.navbar {
+  width: 100%;
+  height: 60px;
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.navbar .links {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar .toggle_btn {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;
+  display: none;
+}
+
+.action_btn {
+  background-color: red;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: scale 0.3 ease;
+}
+
+.action_btn:hover {
+  background-color: #e03131;
+  color: #fff;
+  scale: 1.05;
+}
+
+.action_btn:active {
+  scale: 0.95;
+}
+
+/*Dropdown menu*/
+
+.dropdown_menu {
+  display: none;
+  position: absolute;
+  right: 2rem;
+  top: 60px;
+  width: 300px;
+  /* height: 0; */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 1rem;
+  z-index: 199;
+}
+
+.dropdown_menu_close {
+  display: none;
+}
+
+.dropdown_menu .open {
+  height: 250px;
+}
+
+.dropdown_menu li {
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown_menu .action_btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Container */
+
+.container {
+  max-width: 80%;
+  height: auto;
+  border-radius: 15px;
+  margin: 0 auto;
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.33);
+}
+
+.movies-page {
+  color: #fff;
+}
+
+.movies-page p {
+  text-align: center;
+  font-weight: 800;
+  font-size: 22px;
+  margin: 2.5rem;
+}
+.main-movies-option {
+  display: flex;
+  gap: 3em;
+  justify-content: right;
+  padding: 2rem 2rem 1rem 0;
+}
+
+.main-movies-option li:hover,
+.main-movies-option:active {
+  color: red;
+}
+
+.main-movies-section {
+  border-top: 3px solid rgba(255, 255, 255, 0.06);
+  max-width: 1200px;
+  gap: 2rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.movie-card {
+  margin-top: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1);
+  /* width: 350px !important; */
+  max-width: 270px;
+  border-radius: 10px;
+  color: #fefefebb;
+  position: relative;
+}
+
+.movie-card-body p {
+  padding: 0.3rem 0;
+}
+
+.movie-card span {
+  position: absolute;
+  top: 0;
+  right: 0.1rem;
+  background-color: rgba(255, 0, 0, 0.649);
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.movie-card:nth-child(odd) {
+  max-width: 230px;
+}
+
+.movie-card img {
+  max-width: 100%;
+
+  /* max-height: 30vh; */
+}
+
+.coming-movies-section {
+  display: flex;
+  gap: 3rem;
+  overflow-x: scroll;
+  /* animation: scroll 10s linear infinite; */
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+}
+
+.coming-movies-section {
+  /* font-size: 1.2rem; */
+  /* font-weight: 600; */
+  padding-left: 1rem;
+  margin-top: 2rem;
+  background-color: rgba(0, 0, 0, 0.49);
+
+  /* justify-content: flex-start; */
+}
+
+.coming-movies-section::-webkit-scrollbar-thumb {
+  background-color: red;
+}
+
+.coming-movies-section::-webkit-scrollbar {
+  height: 10px;
+}
+
+.main-coming-section {
+  position: relative;
+}
+
+.main-coming-section .arrow-button button {
+  font-size: 2rem;
+  color: red;
+  padding: 4px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.09);
+}
+
+.main-coming-section .arrow-button button:first-child {
+  position: absolute;
+  top: 40%;
+  left: 2%;
+}
+
+.main-coming-section .arrow-button button:last-child {
+  position: absolute;
+  top: 40%;
+  right: 2%;
+}
+
+.coming-soon-movie-card {
+  min-width: 220px;
+  width: 250px;
+  position: relative;
+  display: inline-block;
+  border-radius: 15px !important;
+  height: auto;
+  overflow: hidden;
+}
+
+.coming-soon-movie-card img {
+  border-radius: 10px;
+  transition: all 1s linear;
+}
+
+.coming-soon-movie-card img:hover {
+  box-shadow: 4px 7px 10px 2px black;
+  transform: scale(1.1);
+}
+
+.coming-soon-movie-card span {
+  position: absolute;
+  right: 0.1rem;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.649);
+  border: 0.2px solid red;
+  border-radius: 5px;
+}
+.coming-soon-movie-card img {
+  max-width: 100%;
+}
+
+/* Details Page*/
+
+.details-page {
+  display: flex;
+  flex-wrap: wrap;
+  color: #fff;
+  justify-content: start;
+  /* flex-direction: row; */
+}
+
+.movies-details-description {
+  flex-basis: 50%;
+  max-width: 100%;
+}
+
+.movies-details-description img {
+  /* width: 600px; */
+  max-width: 100%;
+  height: 350px;
+}
+
+.movies-story {
+  max-width: 100%;
+  flex-basis: 50%;
+  /* margin-top: 2rem; */
+  background: rgba(0, 0, 0, 0.849);
+  padding: 1rem 1.2rem;
+  font-size: 18px;
+}
+
+.movies-story h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  padding-top: 1rem;
+}
+
+.details-other-detail {
+  margin-top: 2rem;
+  background: rgba(0, 0, 0, 0.649);
+  height: fit-content;
+}
+
+.details-other-detail p {
+  padding: 1rem;
+}
+
+.details-other-detail p span {
+  color: red;
+}
+
+/* Ticket Page*/
+
+.ticket-page {
+  background: rgba(0, 0, 0, 0.249);
+}
+
+.ticket-page .image-wrapper {
+  width: 100%;
+  /* background-color: #e03131; */
+  text-align: center;
+}
+
+.ticket-page img {
+  max-width: 100%;
+  height: 55vh;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.table-wrapper {
+  padding: 2rem 0;
+  font-size: 18px;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  justify-content: space-around;
+}
+
+.table-wrapper ul li {
+  padding: 0.8rem 0;
+  background: rgba(0, 0, 0, 0.515);
+}
+
+table {
+  background: rgba(0, 0, 0, 0.815);
+  border-radius: 5px;
+}
+
+table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.649);
+}
+
+table tr td,
+th {
+  padding: 1rem 2rem;
+  text-align: left;
+}
+
+/* contact us page */
+
+.contact-us-page {
+  /* height: 70vh; */
+  /* max-width: 100%; */
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  flex-wrap: wrap;
+  /* align-items: center; */
+}
+
+.contact-us-page-img {
+  width: 100%;
+  text-align: center;
+  flex-basis: 100%;
+}
+
+.contact-us-page img {
+  width: 100%;
+  height: 40vh;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.contact-us-page form {
+  /* width: 100%; */
+  margin-top: 2em;
+  background: rgba(0, 0, 0, 0.09);
+  padding: 1rem;
+}
+
+.contact-us-page form div {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+  /* flex-wrap: wrap;s */
+}
+
+.contact-us-page form div input {
+  height: 3em;
+  width: 100%;
+  border-radius: 5px;
+  padding-left: 1em;
+  border: none;
+}
+
+.contact-us-page form div textarea {
+  height: 7em;
+  width: 100%;
+  border-radius: 5px;
+  padding-left: 1em;
+}
+
+.contact-us-page form button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  width: 20%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.contact-us-page .contact-us-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.contact-us-form .google-map iframe {
+  margin-top: 1.8rem;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+/*customer-service-page*/
+
+.customer-service-page {
+  color: #fff;
+  /* text-align: center; */
+  padding: 1rem;
+}
+
+.customer-service-first-flex {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.customer-service-first-flex img {
+  max-width: 100%;
+  margin-bottom: 3rem;
+  border-radius: 15px;
+}
+
+.customer-service-section p,
+ul li {
+  padding: 0.8rem;
+}
+
+/* .customer-service-pic {
+  flex-basis: 40%;
+  background-color: #000;
+} */
+
+.customer-service-content,
+.customer-service-content section p {
+  padding: 1rem;
+}
+/* .customer-service-pic img {
+  width: 80%;
+} */
+
+/* Responsive */
+
+@media (max-width: 992px) {
+  body {
+    font-size: 18px;
+  }
+  .navbar .links,
+  .navbar .action_btn {
+    display: none;
+  }
+
+  .navbar .toggle_btn {
+    display: block;
+  }
+
+  .dropdown_menu {
+    display: block;
+  }
+
+  .movies-page p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    /* text-shadow: rgba(0, 0, 0, 0.515); */
+  }
+
+  .movie-card:nth-child(even),
+  .movie-card:nth-child(odd) {
+    max-width: 250px;
+  }
+
+  .details-page {
+    flex-direction: column;
+  }
+
+  .table-wrapper {
+    font-size: 17px;
+  }
+
+  table tr td,
+  th {
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+  }
+
+  .contact-us-page {
+    font-size: 17px;
+  }
+
+  .contact-us-page form button {
+    width: 100%;
+  }
+
+  .contact-us-form {
+    margin-top: 2em;
+  }
+
+  .contact-us-page form div {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .ticket-page img {
+    height: 20vh;
+  }
+
+  /* .customer-service-first-flex {
+    flex-direction: column; */
+  /* justify-content: center; */
+  /* flex-wrap: wrap;
+  }
+
+  .customer-service-pic {
+    flex-basis: 100%;
+    width: 100%;
+  }*/
+
+  .customer-service-pic img {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .dropdown_menu {
+    left: 2rem;
+    width: unset;
+  }
+
+  .table-wrapper {
+    font-size: 16px;
+  }
+
+  .table-wrapper ul {
+    margin-top: 1rem;
+    background: rgba(255, 255, 255, 0.015);
+    width: 100%;
+    /* display: inline-flex; */
+  }
+  .table-wrapper ul li {
+    display: block;
+    margin-top: 1rem;
+    padding: 0.8rem 0.5rem;
+    background: rgba(255, 255, 255, 0.015);
+    max-width: 100%;
+    font-size: 18px;
+    font-weight: 800;
+  }
+}

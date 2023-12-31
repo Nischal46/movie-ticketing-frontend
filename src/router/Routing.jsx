@@ -5,6 +5,7 @@ import Booking from "../Component/Pages/Booking";
 import CustomerService from "../Component/Pages/CustomerService";
 import Ticket from "../Component/Pages/Ticket";
 import ContactUS from "../Component/Pages/ContactUS";
+import Register from "../Component/Authentication/Register";
 
 function Routing() {
   return (
@@ -12,6 +13,7 @@ function Routing() {
     <div className="container">
       <Routes>
         <Route path="/" Component={Movies} />
+        <Route path="/register" Component={Register} />
         <Route path="/details" Component={Details} />
         <Route path="/booking" Component={Booking} />
         <Route path="/customerservice" Component={CustomerService} />

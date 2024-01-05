@@ -1,5 +1,54 @@
 .registration-page {
-    background-color: red;
-    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.05);
+    height: auto;
     text-align: center;
+}
+
+.registration-page h3{
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: clamp(18px, 5vw, 28px);
+}
+
+.registration-page form{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.registration-page form input{
+    width: 100%;
+    /* min-width: 380px; */
+    height: 2.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: clamp(17px, 5vw, 22px);
+    text-align: center;
+}
+
+.registration-page form button{
+    background-color: red;
+    height: 2rem;
+    width: 150px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: 800;
+
+}
+
+.registration-page .login-section{
+    color: white;
+    margin: 1rem 0;
+    padding-bottom: 15px;
+}
+
+.registration-page .login-section p{
+    margin-bottom: 1rem;
+    font-size: clamp(16px, 5vw, 22px);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.registration-page .login-section span{
+    color: red;
 }

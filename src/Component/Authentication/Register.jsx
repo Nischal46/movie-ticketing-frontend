@@ -11,8 +11,10 @@ function Register(){
     function handleUserRegistration(){}
 
     return (
-        <div>
-            <form>
+        <div className="registration-page">
+
+            <h3>Register your account here</h3>
+            <form onSubmit={handleUserRegistration} className="user-registration">
                 <input value={userName} onChange={e => setUserName(e.target.value)} placeholder="Full Name" />
                 <br></br>
                 <input value={userEmail} onChange={e => setUserEmail(e.target.value)} placeholder="Email Address" />
@@ -26,6 +28,11 @@ function Register(){
                 <button>Register</button>
 
             </form>
+
+            <div className="login-section">
+                <p>or</p>
+                <p>Already have an account? Please click on <span>Login</span></p>
+            </div>
         </div>
     )
 }

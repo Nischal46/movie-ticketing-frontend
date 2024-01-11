@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 
 
 function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
+
+  const redirect = useNavigate();
 
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
@@ -95,7 +97,7 @@ function Navbar() {
             </li>
           </ul>
 
-          <Link className="action_btn navmenu">Sign in</Link>
+          <Link className="action_btn navmenu" to="/register">Sign in</Link>
           <div className="toggle_btn" onClick={handleToggleClick}>
             <i
               className={`${
@@ -131,7 +133,10 @@ function Navbar() {
             </Link>
           </li>
 
-          <li className="action_btn navmenu">Sign in</li>
+          <li className="action_btn navmenu" onClick={()=>{
+            redirect('/register');
+            console.log('register clicked');
+          }}>Sign in</li>
         </div>
       </header>
     </div>

@@ -1,22 +1,23 @@
-.registration-page {
+.registration-page, .login-page {
     background-color: rgba(0, 0, 0, 0.05);
     height: auto;
     text-align: center;
+    color: white;
 }
 
-.registration-page h3{
-    color: white;
+.registration-page, .login-page h3{
+
     margin-top: 10px;
     margin-bottom: 20px;
     font-size: clamp(18px, 5vw, 28px);
 }
 
-.registration-page form{
+.registration-page form, .login-page form{
     max-width: 600px;
     margin: 0 auto;
 }
 
-.registration-page form input{
+.registration-page form input, .login-page form input{
     width: 100%;
     /* min-width: 380px; */
     height: 2.5rem;
@@ -26,7 +27,7 @@
     text-align: center;
 }
 
-.registration-page form button{
+.registration-page form button, .login-page form button{
     background-color: red;
     height: 2rem;
     width: 150px;
@@ -37,18 +38,18 @@
 
 }
 
-.registration-page .login-section{
-    color: white;
+.registration-page, .login-page .login-section{
+
     margin: 1rem 0;
     padding-bottom: 15px;
 }
 
-.registration-page .login-section p{
+.registration-page, .login-page .login-section p{
     margin-bottom: 1rem;
     font-size: clamp(16px, 5vw, 22px);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.registration-page .login-section span{
+.registration-page, .login-page .login-section span{
     color: red;
 }

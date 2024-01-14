@@ -1,6 +1,11 @@
 import React from "react";
+import { useState } from "react";
+import { useGetAllMoviesQuery } from "../../utils/api";
 
 function Movies() {
+
+  const {data, error, isLoading} = useGetAllMoviesQuery();
+
   return (
     <div className="movies-page">
       <ul className="main-movies-option">

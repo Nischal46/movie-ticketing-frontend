@@ -5,6 +5,7 @@ import { useGetAllMoviesQuery } from "../../utils/api";
 function Movies() {
 
   const {data, error, isLoading} = useGetAllMoviesQuery();
+  console.log(data);
 
   return (
     <div className="movies-page">
@@ -14,9 +15,12 @@ function Movies() {
       </ul>
 
       <div className="main-movies-section">
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
+        {
+          data.length > 0 ? data.data.data.map(cl => <MovieCard key={cl._id} data={cl}  />) : <h4 style={{color: 'white'}}>No data to display in now showing section</h4>
+        }
+        
+        {/* <MovieCard />
+        <MovieCard /> */}
       </div>
 
       <p>Coming Soon</p>
@@ -45,10 +49,10 @@ function Movies() {
 
 export default Movies;
 
-function MovieCard() {
+function MovieCard({data}) {
   return (
     <div className="movie-card">
-      <img src="https://cdn.kobo.com/book-images/39f5758d-be8e-4dfd-8395-52092dfb6f49/353/569/90/False/marvel-s-iron-man-3.jpg" />
+      <img src={data.imageCover} />
       <span>Now Showing</span>
       {/* <div className="movie-card-body">
         <p>

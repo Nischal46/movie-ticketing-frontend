@@ -199,10 +199,12 @@ header {
   background: rgba(255, 255, 255, 0.1);
   
   /* width: 350px !important; */
-  /* max-width: 270px; */
+  max-width: 280px;
+  height: 350px;
   border-radius: 10px;
   color: #fefefebb;
   position: relative;
+  border-radius: 10px;
 }
 
 .movie-card-body p {
@@ -220,12 +222,15 @@ header {
 
 .movie-card:nth-child(odd) {
   max-width: 290px;
+  height: 320px;
 }
 
 .movie-card img {
   max-width: 100%;
-  max-height: 30vh;
+  height: 100%;
+  border-radius: 10px;
 }
+
 
 .coming-movies-section {
   display: flex;

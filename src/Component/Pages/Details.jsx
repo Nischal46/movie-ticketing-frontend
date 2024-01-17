@@ -1,21 +1,38 @@
 import React from "react";
+import { useGetSingleMoviesQuery } from "../../utils/api";
+import { useParams } from "react-router-dom";
 
 function Details() {
-  // const data = {
-  //   name: "Movie Database 1",
-  //   genre: "Romantic",
-  //   releaseDate: "2072-02-12",
-  //   duration: "172",
-  // };
+
+  const {id} = useParams();
+
+  console.log(id);
+
+
+  const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
+
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching movie details</div>;
+  }
+
+  if (!data) {
+    return <div>Data not available</div>;
+  }
 
   return (
     <div className="details-page">
       <div className="movies-details-description">
-        <img src="https://d346azgjfhsciq.cloudfront.net/S3/uploads/gallery/1702912176757-2400x900x.jpg" />
+      <img src={data.data.imageCover} alt="movie pic" />
 
         <div className="details-other-detail">
           <p>
-            <span>Releasing Date: </span>Dec 01, 2023
+            <span>Releasing Date: </span>{data.data.release_date}
           </p>
 
           <p>
@@ -23,7 +40,7 @@ function Details() {
           </p>
 
           <p>
-            <span>Duration: </span> 2 hrs 40 min
+            <span>Duration: </span> {data.data.duration} min
           </p>
 
           <p>
@@ -31,14 +48,14 @@ function Details() {
           </p>
 
           <p>
-            <span>Genre: </span>Action
+            <span>Genre: </span>{data.data.genre}
           </p>
 
           <p>
-            <span>Cast: </span> Prabhas, Anushka
+            <span>Cast: </span> {data.data.movieCast}
           </p>
-        </div>
-      </div>
+        </div> 
+      </div> 
       <div className="movies-story">
         <h3>Fighter</h3>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../utils/api";
 
 function Movies() {
@@ -16,11 +17,9 @@ function Movies() {
 
       <div className="main-movies-section">
         {
-          data.length > 0 ? data.data.data.map(cl => <MovieCard key={cl._id} data={cl}  />) : <h4 style={{color: 'white'}}>No data to display in now showing section</h4>
+          data ? data.data.map(cl => <MovieCard key={cl._id} data={cl}  />) : <h4 style={{color: 'white'}}>No data to display in now showing section</h4>
         }
         
-        {/* <MovieCard />
-        <MovieCard /> */}
       </div>
 
       <p>Coming Soon</p>
@@ -28,11 +27,11 @@ function Movies() {
         <div className="coming-movies-section">
           <ComingSoonMovieCard />
           <ComingSoonMovieCard />
+          {/* <ComingSoonMovieCard />
           <ComingSoonMovieCard />
           <ComingSoonMovieCard />
           <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
+          <ComingSoonMovieCard /> */}
         </div>
         <div className="arrow-button">
           <button>
@@ -50,23 +49,11 @@ function Movies() {
 export default Movies;
 
 function MovieCard({data}) {
+  const redirect = useNavigate();
   return (
-    <div className="movie-card">
+    <div className="movie-card" onClick={() => redirect(`/details/${data._id}`)}>
       <img src={data.imageCover} />
       <span>Now Showing</span>
-      {/* <div className="movie-card-body">
-        <p>
-          <i className="fa-solid fa-film"></i>
-          <strong>Movie Name</strong>
-        </p>
-        <p>
-          <i className="fa-solid fa-calendar-days"></i>
-          <strong>Movie release date</strong>
-        </p>
-        <p>
-          <i className="fa-regular fa-clock"></i> <strong>duration</strong>
-        </p>
-      </div> */}
     </div>
   );
 }
@@ -76,19 +63,6 @@ function ComingSoonMovieCard() {
     <div className="coming-soon-movie-card">
       <img src="https://cdn.kobo.com/book-images/39f5758d-be8e-4dfd-8395-52092dfb6f49/353/569/90/False/marvel-s-iron-man-3.jpg" />
       <span>Coming Soon</span>
-      {/* <div className="movie-card-body">
-        <p>
-          <i className="fa-solid fa-film"></i>
-          <strong>Movie Name</strong>
-        </p>
-        <p>
-          <i className="fa-solid fa-calendar-days"></i>
-          <strong>Movie release date</strong>
-        </p>
-        <p>
-          <i className="fa-regular fa-clock"></i> <strong>duration</strong>
-        </p>
-      </div> */}
     </div>
   );
 }

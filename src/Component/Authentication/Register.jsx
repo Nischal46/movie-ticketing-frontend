@@ -18,14 +18,15 @@ function Register(){
 
     async function handleUserRegistration(e){
         e.preventDefault();
-        try {
-            const registerUserFormData = {name: userName, email: userEmail, contact: userContact, password: userPassword, confirmPassword: userConfirmPassword};
-            setFormData(registerUserFormData);
-            console.log(formData);
+        const registerUserFormData = {name: userName, email: userEmail, contact: userContact, password: userPassword, confirmPassword: userConfirmPassword};
+        setFormData(registerUserFormData);
+        console.log(formData);
 
+        try {
+           
             
             const output = await registerUser(formData);
-            console.log('Registration successfull', output);
+            if (output) console.log('Registration successfull', output);
             
         } catch (error) {
             console.log('Registration failed', error);

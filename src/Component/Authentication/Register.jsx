@@ -42,11 +42,11 @@ function Register(){
                 <br></br>
                 <input value={userEmail} onChange={e => setUserEmail(e.target.value)} placeholder="Email Address" />
                 <br></br>
-                <input value={userContact} onChange={e => setUserContact(e.target.value)} placeholder="Contact" />
+                <input value={userContact} onChange={e => isNaN(e.target.value) || (e.target.value).length > 10  ? "" : setUserContact(e.target.value)} placeholder="Contact" type="text" />
                 <br></br>
-                <input value={userPassword} onChange={e => setUserPassword(e.target.value)} placeholder="Password" />
+                <input value={userPassword} onChange={e => setUserPassword(e.target.value)} placeholder="Password" type="password" />
                 <br></br>
-                <input value={userConfirmPassword} onChange={e => setUserConfirmPassword(e.target.value)} placeholder="Confirm Password" />
+                <input value={userConfirmPassword} onChange={e => setUserConfirmPassword(e.target.value)} placeholder="Confirm Password" type="password" />
                 <br></br>
                 <button>Register</button>
 

@@ -14,6 +14,14 @@ export const api = createApi({
             })
         }),
 
+        loginUser: builder.mutation({
+            query: (loginData) => ({
+                url: '/user/login',
+                method: "POST",
+                body: loginData
+            })
+        }),
+
         getAllMovies: builder.query({
             query: () => '/filim'
         }),
@@ -26,4 +34,4 @@ export const api = createApi({
     })
 });
 
-export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation} = api;
+export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation} = api;

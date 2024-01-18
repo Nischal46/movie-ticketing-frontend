@@ -1,14 +1,35 @@
 import { useState } from "react";
+import { useRegisterUserMutation } from "../../utils/api";
 
 function Register(){
+
+    const [ registerUser ] = useRegisterUserMutation();
+
+
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userContact, setUserContact] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [userConfirmPassword, setUserConfirmPassword] = useState("");
 
+    const [formData, setFormData] = useState({});
 
-    function handleUserRegistration(){
+
+
+    async function handleUserRegistration(e){
+        e.preventDefault();
+        try {
+            const registerUserFormData = {name: userName, email: userEmail, contact: userContact, password: userPassword, confirmPassword: userConfirmPassword};
+            setFormData(registerUserFormData);
+            console.log(formData);
+
+            
+            const output = await registerUser(formData);
+            console.log('Registration successfull', output);
+            
+        } catch (error) {
+            console.log('Registration failed', error);
+        }
         
     }
 

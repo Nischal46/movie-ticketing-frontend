@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGetSingleMoviesQuery } from "../../utils/api";
 import { useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
@@ -106,6 +106,7 @@ function Button({cube}){
 
 function Timing(){
   const { setUserData } = useContext(UserContext);
+  const [isOpen, setIsOpen] = useState(false)
 
   let timing = [
     '6 : 00 to 8 : 00 AM',
@@ -126,13 +127,22 @@ function Timing(){
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
-        {timing.map((cl, i) => <li key={i} className="timing">{cl}</li>)}
+        {timing.map((cl, i) => <li key={i} className="timing" onClick={() => {
+          setIsOpen(true);
+         <ModalOpen />
+        }}>{cl}</li>)}
       </div>
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         {TicketDate.map(cl => <li className="date">{cl}</li>)}
       </div>
     </div>
+  )
+}
+
+function ModalOpen(){
+  return(
+    <div className="modalOpen"></div>
   )
 }
 

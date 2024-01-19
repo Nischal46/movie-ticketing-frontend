@@ -81,3 +81,9 @@
     background-color: red;
 }
 
+.modalOpen{
+    width: 700px;
+    height: 600px;
+    background-color: white;
+}
+

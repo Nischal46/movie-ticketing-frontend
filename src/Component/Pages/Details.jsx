@@ -129,8 +129,8 @@ function Timing(){
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
         {timing.map((cl, i) => <li key={i} className="timing" onClick={() => {
           setIsOpen(true);
-         <ModalOpen />
         }}>{cl}</li>)}
+        <ModalOpen isOpen={isOpen} onClose={setIsOpen(false)} />
       </div>
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>

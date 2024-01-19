@@ -60,8 +60,24 @@
 .timing{
     border: 2px solid;
     padding: 1rem 0;
-    max-width: 600px;
+    max-width: 100%;
     text-align: center;
     margin-bottom: 1rem;
     font-weight: 800;
 }
+
+.timing:hover{
+    background-color: red;
+    transition: all 1s ease-in;
+    
+}
+
+.date{
+    border: 2px solid;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+.date:checked{
+    background-color: red;
+}
+

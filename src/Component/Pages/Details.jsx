@@ -112,13 +112,26 @@ function Timing(){
     '10 : 00 to 12 : 00 PM',
     '2 : 00 to 4 : 00 PM',
     '6 : 00 to 8 : 00 PM'
-  ] 
+  ];
+
+  let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+  let TicketDate = [];
+
+  for(let i = 0; i < 3; i++){
+    TicketDate.push(`${months[new Date().getMonth()]} ${new Date().getDate() + i} ${new Date().getFullYear()}`)
+  }
+  console.log(TicketDate);
+
   return  (
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
         {timing.map((cl, i) => <li key={i} className="timing">{cl}</li>)}
-    </div>
+      </div>
+
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        {TicketDate.map(cl => <li className="date">{cl}</li>)}
+      </div>
     </div>
   )
 }

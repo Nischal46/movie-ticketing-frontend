@@ -17,7 +17,7 @@ function Routing() {
         <Route path="/" Component={Movies} />
         <Route path="/register" Component={Register} />
         <Route path="/login" Component={Login} />
-        <Route path="/details/:id" Component={Details} />
+        <Route path="/details/:cubeid/:id" Component={Details} />
         <Route path="/booking" Component={Booking} />
         <Route path="/customerservice" Component={CustomerService} />
         <Route path="/ticket" Component={Ticket} />

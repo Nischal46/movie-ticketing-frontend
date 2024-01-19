@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../utils/api";
 
 function Movies() {
 
   const {data, error, isLoading} = useGetAllMoviesQuery();
-  console.log(data);
+
 
   return (
     <div className="movies-page">
@@ -17,7 +17,7 @@ function Movies() {
 
       <div className="main-movies-section">
         {
-          data ? data.data.map(cl => <MovieCard key={cl._id} data={cl}  />) : <h4 style={{color: 'white'}}>No data to display in now showing section</h4>
+          data ? data.data.map((cl, i) => <MovieCard key={cl._id} data={cl} index={i+1}  />) : <h4 style={{color: 'white'}}>No data to display in now showing section</h4>
         }
         
       </div>
@@ -25,13 +25,12 @@ function Movies() {
       <p>Coming Soon</p>
       <div className="main-coming-section">
         <div className="coming-movies-section">
-          <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
-          {/* <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
-          <ComingSoonMovieCard />
-          <ComingSoonMovieCard /> */}
+
+        {
+          data ? data.data.map(cl => <ComingSoonMovieCard key={cl._id} data={cl}  />) : <h4 style={{color: 'white'}}>No data to display in coming section</h4>
+        }
+        
+
         </div>
         <div className="arrow-button">
           <button>
@@ -48,20 +47,20 @@ function Movies() {
 
 export default Movies;
 
-function MovieCard({data}) {
+function MovieCard({data, index}) {
   const redirect = useNavigate();
   return (
-    <div className="movie-card" onClick={() => redirect(`/details/${data._id}`)}>
+    <div className="movie-card" onClick={() => redirect(`/details/${index}/${data._id}`)}>
       <img src={data.imageCover} />
       <span>Now Showing</span>
     </div>
   );
 }
 
-function ComingSoonMovieCard() {
+function ComingSoonMovieCard({data}) {
   return (
     <div className="coming-soon-movie-card">
-      <img src="https://cdn.kobo.com/book-images/39f5758d-be8e-4dfd-8395-52092dfb6f49/353/569/90/False/marvel-s-iron-man-3.jpg" />
+      <img src={data.imageCover} />
       <span>Coming Soon</span>
     </div>
   );

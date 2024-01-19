@@ -1,17 +1,16 @@
 import React from "react";
 import { useGetSingleMoviesQuery } from "../../utils/api";
 import { useParams } from "react-router-dom";
+import UserContext from "../../context/UserContext";
+import { useContext } from "react";
+
 
 function Details() {
 
-  const {id} = useParams();
-
-  console.log(id);
-
+  const {cubeid, id} = useParams();
+  console.log(cubeid)
 
   const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
-
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -64,9 +63,64 @@ function Details() {
           incidunt? Ut architecto ab, excepturi tenetur molestiae quibusdam
           aspernatur voluptatum perspiciatis iusto unde, fugiat esse.
         </p>
+
+        <Booking cubeid={+cubeid} moviedata={data.data} />
       </div>
     </div>
+   
+
   );
+}
+
+function Booking({cubeid, moviedata}){
+  console.log('cube id is', cubeid);
+  console.log(typeof cubeid);
+  let cube;
+
+  if(cubeid === cubeid){
+    cube = {
+      cube: `CUBE ${cubeid}`
+    }
+  };
+
+  console.log(cube);
+  return (
+    <div>
+      <h3>Show Available At:</h3>
+
+      {cubeid === 1 && <Button cube='CUBE 1' /> }
+      {cubeid === 2 && <Button cube='CUBE 2' /> }
+      {cubeid === 3 && <Button cube ='CUBE 3' /> }
+
+    <Timing cubedetails={cube} moviedata={moviedata} />
+      
+    </div>
+  )
+}
+
+function Button({cube}){
+  return (
+    <button className="action_btn">{cube}</button>
+  )
+}
+
+function Timing(){
+  const { setUserData } = useContext(UserContext);
+
+  let timing = [
+    '6 : 00 to 8 : 00 AM',
+    '10 : 00 to 12 : 00 PM',
+    '2 : 00 to 4 : 00 PM',
+    '6 : 00 to 8 : 00 PM'
+  ] 
+  return  (
+    <div>
+       <h4 style={{margin: '1rem 0'}}>Timing: </h4>
+      <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
+        {timing.map((cl, i) => <li key={i} className="timing">{cl}</li>)}
+    </div>
+    </div>
+  )
 }
 
 export default Details;

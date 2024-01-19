@@ -53,3 +53,15 @@
 .registration-page, .login-page .login-section span{
     color: red;
 }
+
+
+
+/* details page css */
+.timing{
+    border: 2px solid;
+    padding: 1rem 0;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}

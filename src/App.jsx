@@ -14,7 +14,10 @@ function App() {
 
     <div>
       <Navbar />
-      <Routing />
+      <UserContextProvider>
+        <Routing />
+      </UserContextProvider>
+      
     </div>
   );
 }

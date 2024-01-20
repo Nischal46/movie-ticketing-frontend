@@ -123,15 +123,21 @@ function Timing(){
   }
   console.log(TicketDate);
 
+  const openModal = () => {
+    setIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsOpen(false)
+  }
+
   return  (
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
-        {timing.map((cl, i) => <li key={i} className="timing" onClick={() => {
-          setIsOpen(true);
-        }}>{cl}</li>)}
-        <ModalOpen isOpen={isOpen} onClose={setIsOpen(false)} />
+        {timing.map((cl, i) => <li key={i} className="timing" onClick={openModal}>{cl}</li>)}
       </div>
+        <ModalOpen isOpen={isOpen} onClose={closeModal} />
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         {TicketDate.map(cl => <li className="date">{cl}</li>)}
@@ -140,9 +146,33 @@ function Timing(){
   )
 }
 
-function ModalOpen(){
+function ModalOpen({isOpen, onClose}){
+  if (!isOpen) {
+    return null;
+  }
+  let seat = [];
+
+ for(let i = 1; i<=120; i++){
+  seat.push(`seat no ${i}`);
+ }
+
+ console.log(seat)
   return(
-    <div className="modalOpen"></div>
+    <div className="modalOpen">
+      <span onClick={onClose}>&times;</span>
+
+      <div style={{display: 'flex', margin: '2rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', position: 'relative', padding: '2rem 0'}}>
+      {seat.map((cl, i) => <div key={i} style={{color: 'green', padding: '0.5rem 0.5rem'}} ><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '46px'}}></i></div>)}
+
+
+      <div className="screen"></div>
+      </div>
+
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
+     <div style={{color: 'red'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booked</p></div>
+      <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
+      </div>
+    </div>
   )
 }
 

@@ -346,6 +346,7 @@ header {
   background: rgba(0, 0, 0, 0.849);
   padding: 1rem 1.2rem;
   font-size: 18px;
+  position: relative;
 }
 
 .movies-story h3 {

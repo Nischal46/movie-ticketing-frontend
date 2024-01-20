@@ -76,6 +76,7 @@
     border: 2px solid;
     margin: 1rem 0;
     padding: 1rem;
+    border-radius: 25px;
 }
 .date:checked{
     background-color: red;
@@ -108,5 +109,11 @@
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 
+}
+
+@media (max-width: 770px) {
+.modalOpen{
+    left: 0;
+}
 }
 

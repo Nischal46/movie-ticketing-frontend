@@ -190,8 +190,69 @@ function ModalOpen({isOpen, onClose}){
   }
   let seat = [];
 
+  let a = 1, b = 1, c = 1, d = 1, e = 1, f = 1, g = 1, h = 1, x = 1, j = 1, k = 1, l = 1;
+
+
  for(let i = 1; i<=120; i++){
-  seat.push(`seat no ${i}`);
+  // seat.push(`seat no ${i}`);
+  if(i <= 10){
+    seat[i] = `A${a}`;
+    a++;
+  }
+  else if (i <= 20){
+    seat[i] = `B${b}`;
+    b++;
+  }
+
+  else if (i <= 30){
+    seat[i] = `C${c}`;
+    c++;
+  }
+
+  else if (i <= 40){
+    seat[i] = `D${d}`;
+    d++;
+  }
+
+  else if (i <= 50){
+    seat[i] = `E${e}`;
+    e++;
+  }
+
+  else if (i <= 60){
+    seat[i] = `F${f}`;
+    f++;
+  }
+
+  else if (i <= 70){
+    seat[i] = `G${g}`;
+    g++;
+  }
+
+  else if (i <= 80){
+    seat[i] = `H${h}`;
+    h++;
+  }
+
+  else if (i <= 90){
+    seat[i] = `I${x}`;
+    x++;
+  }
+
+  else if (i <= 100){
+    seat[i] = `J${j}`;
+    j++;
+  }
+
+  else if (i <= 110){
+    seat[i] = `K${k}`;
+    k++;
+  }
+
+  else if (i <= 120){
+    seat[i] = `L${l}`;
+    l++;
+  }
  }
 
  console.log(seat)
@@ -199,8 +260,11 @@ function ModalOpen({isOpen, onClose}){
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
 
-      <div style={{display: 'flex', margin: '2rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', position: 'relative', padding: '2rem 0'}}>
-      {seat.map((cl, i) => <div key={i} style={{color: 'green', padding: '0.5rem 1rem'}} ><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i></div>)}
+      <div className="seatlayout">
+      {seat.map((cl, i) => (<div key={i} className="seat" onClick={() => alert('clicked')}>
+        {/* <i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}} onClick={() => alert('clicked')}>{cl}</i> */}
+        {cl}
+        </div>))}
 
 
       <div className="screen"></div>

@@ -83,23 +83,6 @@
     background-color: red;
 }
 
-.seat{
-    color: black;
-    width: 55px;
-    margin: 10px 5px;
-    text-align: center;
-    font-weight: 800;
-}
-
-.seatreserved{
-    background-color: red;
-
-}
-
-.seatavailable{
-   background-color: green;
-}
-
 .modalOpen{
     width: 100%;
     height: 100%;
@@ -139,7 +122,28 @@
     justify-content: space-between; 
     align-items: center; 
     position: relative; 
-    padding: 2rem 0;
+    padding: 1rem 0;
+}
+
+.seat{
+    color: black;
+    width: 55px;
+    margin: 10px 5px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.seatbooked{
+    background-color: orange;
+}
+
+.seatavailable{
+   background-color: green;
+}
+
+.seatalreadyreserved{
+    background-color: red;
+    pointer-events: none;
 }
 
 

@@ -110,39 +110,44 @@ function Timing(){
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
 
-const getHour = new Date().getHours();
-const getDate = new Date().getDate();
 
-function CheckTodayDate(passdate){
-  if(getDate === passdate && getHour > 6 && getHour < 10){
-    return setTiming([ '10 : 00 to 12 : 00 PM',
-    '2 : 00 to 4 : 00 PM',
-    '6 : 00 to 8 : 00 PM'])
-  }
-  
-  else if(getDate === passdate && getHour > 10 && getHour < 16){
-    return setTiming([ '2 : 00 to 4 : 00 PM',
-    '6 : 00 to 8 : 00 PM'])
-  }
-  
-  else if(getDate === passdate && getHour > 16 && getHour < 20){
-    console.log('trur trur');
-    return setTiming([  '6 : 00 to 8 : 00 PM'])
-  }
 
-  else if(getDate === passdate && getHour > 20){
-    return setTiming([]);
-  }
-  
-  else {
-    return setTiming([
-      '6 : 00 to 8 : 00 AM',
-      '10 : 00 to 12 : 00 PM',
+  function CheckTodayDate(passdate){
+
+    const getHour = new Date().getHours();
+    const getDate = new Date().getDate();
+
+    console.log(passdate, getDate, getHour);
+
+    if(getDate === passdate && getHour >= 6 && getHour < 10){
+      return setTiming([ '10 : 00 to 12 : 00 PM',
       '2 : 00 to 4 : 00 PM',
-      '6 : 00 to 8 : 00 PM'
-    ]);
-  } 
-}
+      '6 : 00 to 8 : 00 PM'])
+    }
+    
+    else if(getDate === passdate && getHour >= 10 && getHour < 16){
+      return setTiming([ '2 : 00 to 4 : 00 PM',
+      '6 : 00 to 8 : 00 PM'])
+    }
+    
+    else if(getDate === passdate && getHour >= 16 && getHour < 20){
+      console.log('trur trur');
+      return setTiming(['6 : 00 to 8 : 00 PM'])
+    }
+
+    else if(getDate === passdate && getHour >= 20){
+      return setTiming([]);
+    }
+    
+    else {
+      return setTiming([
+        '6 : 00 to 8 : 00 AM',
+        '10 : 00 to 12 : 00 PM',
+        '2 : 00 to 4 : 00 PM',
+        '6 : 00 to 8 : 00 PM'
+      ]);
+    } 
+  }
   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   let TicketDate = [];
 
@@ -183,21 +188,19 @@ function CheckTodayDate(passdate){
 }
 
 function ModalOpen({isOpen, onClose}){
-  // const [isreserverd, setIsreserved] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState([]);
+  const [fakesear, setfakeseat] = useState(['A2', 'G7'])
 
   if (!isOpen) {
     return null;
   }
-  let seat = [];
 
-  // console.log(isreserverd);
+  let seat = [];
 
   let a = 1, b = 1, c = 1, d = 1, e = 1, f = 1, g = 1, h = 1, x = 1, j = 1, k = 1, l = 1;
 
-
  for(let i = 1; i<=120; i++){
-  // seat.push(`seat no ${i}`);
+
   if(i <= 10){
     seat[i] = `A${a}`;
     a++;
@@ -264,11 +267,14 @@ function ModalOpen({isOpen, onClose}){
       return [...pd, index]
     }
     else{
+      const removedSeat = pd.filter(x => x !== index)
       console.log('Already insert');
-      return pd;
+      return removedSeat;
     }
   })
  }
+
+
 
  console.log(selectedIndex);
 
@@ -276,13 +282,12 @@ function ModalOpen({isOpen, onClose}){
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
 
+      {selectedIndex.length > 0 ? <button className="action_btn" style={{marginTop: '1rem', marginLeft: "1rem" }}>Proceed to payment</button> : ""}
+
       <div className="seatlayout">
-      {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatreserved' : 'seatavailable'} `} onClick={() => {
-        // setIsreserved(!isreserverd);
+        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakesear.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
         handleClickSeat(i)
-        // console.log('You have clkicked ', cl);
-      }}>
-        {/* <i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}} onClick={() => alert('clicked')}>{cl}</i> */}
+        }}>
         {cl}
         </div>))}
 
@@ -291,7 +296,8 @@ function ModalOpen({isOpen, onClose}){
       </div>
 
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
-      <div style={{color: 'red'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booked</p></div>
+      <div style={{color: 'red'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Reserved</p></div>
+      <div style={{color: 'orange'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booking</p></div>
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
     </div>

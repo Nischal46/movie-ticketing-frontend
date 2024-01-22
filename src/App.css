@@ -78,17 +78,26 @@
     padding: 1rem;
     border-radius: 25px;
 }
+
 .date:checked{
     background-color: red;
 }
 
 .seat{
-   color: black;
-   width: 55px;
-   margin: 10px 5px;
+    color: black;
+    width: 55px;
+    margin: 10px 5px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.seatreserved{
+    background-color: red;
+
+}
+
+.seatavailable{
    background-color: green;
-   text-align: center;
-   font-weight: 800;
 }
 
 .modalOpen{
@@ -117,11 +126,20 @@
     left: 35%;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    color: black;
+    font-weight: 800;
+    text-align: center;
 
 }
 
 .seatlayout{
-    display: flex;  margin: 2rem; flex-wrap: wrap; justify-content: space-between; align-items: center; position: relative; padding: 2rem 0;
+    display: flex;  
+    margin: 2rem; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: relative; 
+    padding: 2rem 0;
 }
 
 
@@ -131,19 +149,23 @@
     .modalOpen{
         left: 0;
     }
-    
+
     .seat{
-        font-weight: 300;
-        color: black;
+       font-weight: 300;
        width: 41px;
        margin: 10px 1px;
-       background-color: green;
        text-align: center;
-    
+
     }
     
     .seatlayout{
-        display: flex;  margin: 2rem 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center; position: relative; padding: 2rem 0;
+        display: flex;  
+        margin: 2rem 1rem; 
+        flex-wrap: wrap; 
+        justify-content: space-between; 
+        align-items: center; 
+        position: relative; 
+        padding: 2rem 0;
     }
     }
 
@@ -155,15 +177,18 @@
 .seat{
     font-weight: 300;
     color: black;
-   width: 47px;
-   margin: 10px 1px;
-   background-color: green;
-   text-align: center;
-
+    width: 47px;
+    margin: 10px 1px;
 }
 
 .seatlayout{
-    display: flex;  margin: 2rem; flex-wrap: wrap; justify-content: space-between; align-items: center; position: relative; padding: 2rem 0;
+    display: flex;  
+    margin: 2rem; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: relative; 
+    padding: 2rem 0;
 }
 }
 
@@ -176,34 +201,36 @@
         font-weight: bold;
         font-size: 15px;
         color: black;
-       width: 27px;
-       margin: 10px 1px;
-       background-color: green;
-       text-align: center;
-    
+        width: 27px;
+        margin: 10px 1px;
     }
     .seatlayout{
-        margin: 1.8rem; justify-content: space-between; align-items: center; position: relative; padding: 2rem 0;
+        margin: 1.8rem; 
+        justify-content: space-between; 
+        align-items: center; 
+        position: relative; 
+        padding: 2rem 0;
     }
 }
 
 @media (max-width: 465px) {
         .modalOpen{
-            left: 0;
+           left: 0;
         }
         
         .seat{
-        font-weight: bold;
-        font-size: 14px;
+           font-weight: bold;
+           font-size: 14px;
            color: black;
            width: 25px;
            margin: 10px 1px;
-           background-color: green;
-           text-align: center;
-        
         }
         .seatlayout{
-            margin: 2rem; justify-content: space-between; align-items: center; position: relative; padding: 2rem 0;
+            margin: 2rem; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            padding: 2rem 0;
         }
 }
     
@@ -212,18 +239,20 @@
         left: 0;
     }
     
-    .seat{
-    font-weight: bold;
-    font-size: 12px;
+    .seatavailable{
+       font-weight: bold;
+       font-size: 12px;
        color: black;
        width: 24px;
        margin: 10px 1px;
-       background-color: green;
-       text-align: center;
-    
     }
     .seatlayout{
-        margin: 1.3rem; justify-content: space-between; flex-wrap: wrap; align-items: center; position: relative; padding: 2rem 0;
+        margin: 1.3rem; 
+        justify-content: space-between; 
+        flex-wrap: wrap; 
+        align-items: center; 
+        position: relative; 
+        padding: 2rem 0;
     }
 }
 

@@ -171,24 +171,27 @@ function CheckTodayDate(passdate){
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
 
        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        {TicketDate.map(cl => <li className="date" onClick={() => openTimingModal(cl)}>{cl}</li>)}
+        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl)}>{cl}</li>)}
       </div>
      { timingOpen === true && <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
         {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={openModal}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
       </div>
 }
         <ModalOpen isOpen={isOpen} onClose={closeModal} />
-
-   
     </div>
   )
 }
 
 function ModalOpen({isOpen, onClose}){
+  // const [isreserverd, setIsreserved] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState([]);
+
   if (!isOpen) {
     return null;
   }
   let seat = [];
+
+  // console.log(isreserverd);
 
   let a = 1, b = 1, c = 1, d = 1, e = 1, f = 1, g = 1, h = 1, x = 1, j = 1, k = 1, l = 1;
 
@@ -241,33 +244,50 @@ function ModalOpen({isOpen, onClose}){
 
   else if (i <= 100){
     seat[i] = `J${j}`;
-    j++;
   }
 
   else if (i <= 110){
     seat[i] = `K${k}`;
-    k++;
+  
   }
 
   else if (i <= 120){
     seat[i] = `L${l}`;
+  
     l++;
   }
  }
 
- console.log(seat)
+ const handleClickSeat = (index) => {
+  setSelectedIndex((pd) => {
+    if(!pd.includes(index)){
+      return [...pd, index]
+    }
+    else{
+      console.log('Already insert');
+      return pd;
+    }
+  })
+ }
+
+ console.log(selectedIndex);
+
   return(
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
 
       <div className="seatlayout">
-      {seat.map((cl, i) => (<div key={i} className="seat" onClick={() => alert('clicked')}>
+      {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatreserved' : 'seatavailable'} `} onClick={() => {
+        // setIsreserved(!isreserverd);
+        handleClickSeat(i)
+        // console.log('You have clkicked ', cl);
+      }}>
         {/* <i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}} onClick={() => alert('clicked')}>{cl}</i> */}
         {cl}
         </div>))}
 
 
-      <div className="screen"></div>
+      <div className="screen">Screen</div>
       </div>
 
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>

@@ -18,7 +18,7 @@ export const api = createApi({
             query: (loginData) => ({
                 url: '/user/login',
                 method: "POST",
-                body: loginData
+                body: loginData,
             })
         }),
 

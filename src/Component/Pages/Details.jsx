@@ -247,6 +247,7 @@ function ModalOpen({isOpen, onClose}){
 
   else if (i <= 100){
     seat[i] = `J${j}`;
+    j++;
   }
 
   else if (i <= 110){
@@ -282,7 +283,7 @@ function ModalOpen({isOpen, onClose}){
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
 
-      {selectedIndex.length > 0 ? <button className="action_btn" style={{marginTop: '1rem', marginLeft: "1rem" }}>Proceed to payment</button> : ""}
+      
 
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakesear.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
@@ -300,6 +301,8 @@ function ModalOpen({isOpen, onClose}){
       <div style={{color: 'orange'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booking</p></div>
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
+
+      {selectedIndex.length > 0 ? <button className="action_btn payment_button">Proceed to payment</button> : ""}
     </div>
   )
 }

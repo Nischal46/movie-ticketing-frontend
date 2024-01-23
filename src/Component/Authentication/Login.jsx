@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { useLoginUserMutation } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
+import { useContext } from "react";
 
 function Login(){
 
+    const redirect = useNavigate();
     const [ loginUser ] = useLoginUserMutation();
+    const { setUserData } = useContext(UserContext);
+
+    const { userData } = useContext(UserContext);
+
+   
 
     const [formData, setformData] = useState({
         email: "",
@@ -20,8 +29,16 @@ function Login(){
     async function handlesubmitLogin(e){
         e.preventDefault();
         try{
+            let userdetails = {};
             const response = await loginUser(formData);
-            console.log('Login successfull', response);
+
+            userdetails.name = response.data.data.name;
+            userdetails.email = response.data.data.email;
+            userdetails.contact = response.data.data.contact;
+            userdetails.role = response.data.data.role;
+
+            setUserData((cv) => [...cv, { userdetails}]);
+            redirect('/')
         }
         catch(error){
             console.log('Login Failed', error);
@@ -41,7 +58,7 @@ function Login(){
 
         <div className="login-section">
             <p>or</p>
-            <p>Already have an account? Please click on <span>Register</span></p>
+            <p>Does not have an account? Please click on <span onClick={() => redirect('/register')}>Register</span></p>
         </div>
     </div>
 }

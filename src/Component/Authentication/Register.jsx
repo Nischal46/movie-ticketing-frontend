@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useRegisterUserMutation } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function Register(){
 
+    const redirect = useNavigate();
     const [ registerUser ] = useRegisterUserMutation();
 
 
@@ -55,7 +57,7 @@ function Register(){
 
             <div className="login-section">
                 <p>or</p>
-                <p>Already have an account? Please click on <span>Login</span></p>
+                <p style={{color: 'white'}}>Already have an account? Please click on <span style={{color: 'red'}} onClick={() => redirect('/login')}>Login</span></p>
             </div>
         </div>
     )

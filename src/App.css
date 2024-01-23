@@ -122,7 +122,7 @@
     justify-content: space-between; 
     align-items: center; 
     position: relative; 
-    padding: 1rem 0;
+    padding: 0 0 2rem 0;
 }
 
 .seat{
@@ -144,6 +144,14 @@
 .seatalreadyreserved{
     background-color: red;
     pointer-events: none;
+}
+
+.payment_button{
+    margin-top: 1.5rem;
+    max-width: 500px;
+    position: inherit;
+    right: 0;
+    margin-right: 20px;
 }
 
 
@@ -187,7 +195,7 @@
 
 .seatlayout{
     display: flex;  
-    margin: 2rem; 
+    margin: 0 2rem; 
     flex-wrap: wrap; 
     justify-content: space-between; 
     align-items: center; 
@@ -209,10 +217,7 @@
         margin: 10px 1px;
     }
     .seatlayout{
-        margin: 1.8rem; 
-        justify-content: space-between; 
-        align-items: center; 
-        position: relative; 
+        margin: 0 1.8rem; 
         padding: 2rem 0;
     }
 }
@@ -230,7 +235,7 @@
            margin: 10px 1px;
         }
         .seatlayout{
-            margin: 2rem; 
+            margin: 0 2rem; 
             justify-content: space-between; 
             align-items: center; 
             position: relative; 

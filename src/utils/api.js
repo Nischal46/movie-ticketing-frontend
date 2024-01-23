@@ -22,6 +22,10 @@ export const api = createApi({
             })
         }),
 
+        getUser: builder.query({
+            query: () => `/user/me`
+        }),
+
         getAllMovies: builder.query({
             query: () => '/filim'
         }),
@@ -34,4 +38,4 @@ export const api = createApi({
     })
 });
 
-export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation} = api;
+export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation, useGetUserQuery} = api;

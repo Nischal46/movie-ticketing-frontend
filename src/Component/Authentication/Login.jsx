@@ -36,8 +36,9 @@ function Login(){
             userdetails.email = response.data.data.email;
             userdetails.contact = response.data.data.contact;
             userdetails.role = response.data.data.role;
+            userdetails.isVerified = true;
 
-            setUserData((cv) => [...cv, { userdetails}]);
+            setUserData((cv) => [{ userdetails}]);
             redirect('/')
         }
         catch(error){

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
+import { useGetUserQuery } from "../../utils/api";
 
 
 function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
+  const {data, error, isLoading} = useGetUserQuery();
 
   const {userData} = useContext(UserContext);
 

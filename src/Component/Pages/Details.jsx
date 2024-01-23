@@ -189,7 +189,8 @@ function Timing(){
 
 function ModalOpen({isOpen, onClose}){
   const [selectedIndex, setSelectedIndex] = useState([]);
-  const [fakesear, setfakeseat] = useState(['A2', 'G7'])
+  const [fakesear, setfakeseat] = useState(['A2', 'G7']);
+  const {userData} = useContext(UserContext);
 
   if (!isOpen) {
     return null;

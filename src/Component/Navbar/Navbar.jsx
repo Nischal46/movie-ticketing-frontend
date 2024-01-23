@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
+import UserContext from "../../context/UserContext";
+import { useContext } from "react";
 
 
 function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
+
+  const {userData} = useContext(UserContext);
 
   const redirect = useNavigate();
 
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
   };
+
+  console.log(userData);
 
   return (
     <div>
@@ -41,7 +47,11 @@ function Navbar() {
             </li>
           </ul>
 
-          <Link className="action_btn navmenu" to="/register">Sign in</Link>
+          {userData.length > 0 ? <div className="userprofile">
+            <div>{userData[0].userdetails?.name.split(" ")[0]}</div>
+            <button className="action_btn">Log Out</button>
+          </div> : <Link className="action_btn navmenu" to="/register">Sign in</Link>}
+          
           <div className="toggle_btn" onClick={handleToggleClick}>
             <i
               className={`${
@@ -77,10 +87,16 @@ function Navbar() {
             </Link>
           </li>
 
-          <li className="action_btn navmenu" onClick={()=>{
+          {/* <li className="action_btn navmenu" onClick={()=>{
             redirect('/register');
             console.log('register clicked');
-          }}>Sign in</li>
+          }}>Sign in</li> */}
+          {userData.length > 0 ? <li>
+           <div className="userprofilesmallwidth">
+           <div>{userData[0].userdetails.name.split(" ")[0]}</div>
+            <button className="action_btn navmenu">Log Out</button>
+           </div>
+          </li> : <Link className="action_btn navmenu" to="/register">Sign in</Link>}
         </div>
       </header>
     </div>

@@ -94,7 +94,7 @@ header {
   padding: 0.5rem 1rem;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: bold;
   transition: scale 0.3 ease;
@@ -108,6 +108,21 @@ header {
 
 .action_btn:active {
   scale: 0.95;
+}
+
+.userprofile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userprofile div{
+  border-bottom: 2px solid;
+  background-color: white;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 10px;
+
 }
 
 /*Dropdown menu*/
@@ -556,6 +571,26 @@ ul li {
 
   .dropdown_menu {
     display: block;
+  }
+
+  .userprofile div{
+    display: none;
+  }
+
+  .userprofilesmallwidth{
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 1rem;
+  }
+
+  .userprofilesmallwidth div{
+    border-bottom: 2px solid;
+    background-color: white;
+    color: black;
+    padding: 0.5rem;
+    border-radius: 10px;
+
   }
 
   .movies-page p {

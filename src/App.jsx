@@ -13,8 +13,9 @@ function App() {
     // </UserContextProvider>
 
     <div>
-      <Navbar />
+      
       <UserContextProvider>
+        <Navbar />
         <Routing />
       </UserContextProvider>
       

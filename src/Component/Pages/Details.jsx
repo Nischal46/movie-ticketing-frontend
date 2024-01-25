@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGetSingleMoviesQuery } from "../../utils/api";
-import { useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 
@@ -188,6 +188,7 @@ function Timing(){
 }
 
 function ModalOpen({isOpen, onClose}){
+  const redirect = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState([]);
   const [fakesear, setfakeseat] = useState(['A2', 'G7']);
   const {userData} = useContext(UserContext);
@@ -276,6 +277,10 @@ function ModalOpen({isOpen, onClose}){
   })
  }
 
+ const handlePayment = () => {
+  userData.length > 0 ? redirect('/payment') : redirect('/login');
+ }
+
 
 
  console.log(selectedIndex);
@@ -303,7 +308,7 @@ function ModalOpen({isOpen, onClose}){
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
 
-      {selectedIndex.length > 0 ? <button className="action_btn payment_button">Proceed to payment</button> : ""}
+      {selectedIndex.length > 0 ? <button className="action_btn payment_button" onClick={handlePayment}>Proceed to payment</button> : ""}
     </div>
   )
 }

@@ -15,9 +15,11 @@ function Navbar() {
 
   console.log('from getMe ', data);
 
+  
   const UpdateUserDetails = () => {
     if(data){
       setUserDetails([data.data])
+      setUserData([data.data][0]);
     }
     else{
       setUserDetails([])
@@ -27,9 +29,6 @@ function Navbar() {
   useEffect(() => {
     UpdateUserDetails();
   }, [data])
-
- 
-
 
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
@@ -65,6 +64,11 @@ function Navbar() {
               </Link>
             </li>
           </ul>
+
+          {/* {userData.length > 0 || (userDetails.length > 0)  ? <div className="userprofile">
+            <div>{(userData[0]?.userdetails?.name.split(" ")[0]) || (userDetails.name.slice(0, 7))}</div>
+            <button className="action_btn">Log Out</button>
+          </div> : <Link className="action_btn navmenu" to="/register">Sign in</Link>} */}
 
           {
             (() => {
@@ -148,7 +152,7 @@ function Navbar() {
               }
             })()
           }
-
+          
         </div>
       </header>
     </div>

@@ -9,11 +9,6 @@ function Login(){
     const redirect = useNavigate();
     const [ loginUser ] = useLoginUserMutation();
     const { setUserData } = useContext(UserContext);
-
-    const { userData } = useContext(UserContext);
-
-   
-
     const [formData, setformData] = useState({
         email: "",
         password: ""

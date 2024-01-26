@@ -3,6 +3,7 @@ import { useGetSingleMoviesQuery } from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
+import khaltiPic from "./../../../photos/khalti.png"
 
 
 function Details() {
@@ -323,7 +324,8 @@ function ModalOpen({isOpen, onClose}){
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
 
-      {selectedIndex.length > 0 ? <button className="action_btn payment_button" onClick={() => handlePayment(selectedIndex)}>Proceed to payment</button> : ""}
+      {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => handlePayment(selectedIndex)}>
+        <img src={khaltiPic} /> Pay with Khalti</button> : ""}
     </div>
   )
 }

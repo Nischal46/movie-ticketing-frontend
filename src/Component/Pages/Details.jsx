@@ -10,6 +10,8 @@ function Details() {
   const {cubeid, id} = useParams();
   const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
 
+  console.log('filim details ', data.data);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -190,6 +192,9 @@ function ModalOpen({isOpen, onClose}){
   const [selectedIndex, setSelectedIndex] = useState([]);
   const [fakeseat, setfakeseat] = useState(['A2', 'G7']);
   const {userData, setUserData} = useContext(UserContext);
+  const {seatArray, setSeatArray} = useContext(UserContext);
+
+  console.log('The context api value is ', userData);
 
   if (!isOpen) {
     return null;
@@ -263,21 +268,35 @@ function ModalOpen({isOpen, onClose}){
   }
  }
 
- const handleClickSeat = (index) => {
+ let seatdetails = [];
+
+ const handleClickSeat = (index, seatno) => {
   setSelectedIndex((pd) => {
     if(!pd.includes(index)){
       return [...pd, index]
     }
     else{
-      const removedSeat = pd.filter(x => x !== index)
+      const removedSeat = pd.filter(x => x !== index);
       console.log('Already insert');
+      return removedSeat;
+    }
+  })
+
+  setSeatArray((prev) => {
+    if(!prev.includes(seatno)){
+      return [...prev, seatno]
+    }
+    else{
+      const removedSeat = prev.filter(cl => cl !== seatno);
       return removedSeat;
     }
   })
  }
 
+ console.log('seat array is ', seatArray);
+
  const handlePayment = (data) => {
-  console.log('array passing ', data);
+  console.log(selectedIndex);
   userData.length > 0 ? redirect('/payment') : redirect('/login');
  }
 
@@ -289,7 +308,7 @@ function ModalOpen({isOpen, onClose}){
 
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
-        handleClickSeat(i)
+        handleClickSeat(i, cl)
         }}>
         {cl}
         </div>))}

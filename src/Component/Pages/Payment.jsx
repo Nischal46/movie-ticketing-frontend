@@ -5,8 +5,11 @@ import UserContext from "../../context/UserContext";
 function Payment() {
 
   const {userData} = useContext(UserContext);
-  console.log(userData);
-  return (<div className="payment-page">
+  const {seatArray} = useContext(UserContext);
+  
+  console.table(userData);
+  console.table(seatArray);
+  return (<div className="payment-page" style={{color: 'white'}}>
     This is the payment page
   </div>);
 }

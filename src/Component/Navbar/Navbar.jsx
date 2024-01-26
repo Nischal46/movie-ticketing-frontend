@@ -65,7 +65,7 @@ function Navbar() {
             (() => {
               if(userData.length > 0){
                 return <div className="userprofile">
-                  <div>{(userData[0]?.name.split(" ")[0])}</div>
+                  <div>{userData[0].name}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }
@@ -123,7 +123,7 @@ function Navbar() {
             (() => {
               if(userData.length > 0){
                 return <div className="userprofilesmallwidth">
-                  <div>{(userData[0]?.name.split(" ")[0])}</div>
+                  <div>{userData[0]?.name}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }

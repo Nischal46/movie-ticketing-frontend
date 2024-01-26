@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 import { useGetUserQuery } from "../../utils/api";
+
 
 
 function Navbar() {
@@ -13,23 +14,19 @@ function Navbar() {
   const [userDetails, setUserDetails] = useState([])
   const {userData, setUserData} = useContext(UserContext);
 
-  const UpdateUserDetails = () => {
+  useEffect(() => {
     if(data){
       setUserDetails([data.data])
       setUserData([data.data]);
     }
-    else{
-      setUserDetails([])
-    }
-  }
-
-  useEffect(() => {
-    UpdateUserDetails();
   }, [data])
 
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
   };
+  
+  console.log('userdata', userData);
+  console.log('userdetails', userDetails);
 
   return (
     <div>
@@ -63,14 +60,7 @@ function Navbar() {
 
           {
             (() => {
-              if(userData.length > 0){
-                return <div className="userprofile">
-                  <div>{userData[0].name}</div>
-                  <button className="action_btn">Log Out</button>
-                </div>
-              }
-
-              else if(userDetails.length > 0){
+              if(userDetails.length > 0){
                 console.log(userDetails[0].name);
                 return <div className="userprofile">
                   <div>{(userDetails[0].name).slice(0, 8)}</div>
@@ -78,6 +68,14 @@ function Navbar() {
                 </div>
               }
               
+
+              else if(userData.length > 0){
+                return <div className="userprofile">
+                  <div>{userData[0].userdetails ? userData[0].userdetails.name : userData[0].name}</div>
+                  <button className="action_btn">Log Out</button>
+                </div>
+              }
+
               else{
                 return <Link className="action_btn navmenu" to="/register">Sign in</Link>
               }
@@ -121,17 +119,17 @@ function Navbar() {
 
           {
             (() => {
-              if(userData.length > 0){
+              if(userDetails.length > 0){
+                console.log(userDetails[0].name);
                 return <div className="userprofilesmallwidth">
-                  <div>{userData[0]?.name}</div>
+                  <div>{(userDetails[0].name).slice(0, 8)}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }
 
-              else if(userDetails.length > 0){
-                console.log(userDetails[0].name);
+              else if(userData.length > 0){
                 return <div className="userprofilesmallwidth">
-                  <div>{(userDetails[0].name).slice(0, 8)}</div>
+                  <div>{userData[0].userdetails ? userData[0].userdetails.name : userData[0].name}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }

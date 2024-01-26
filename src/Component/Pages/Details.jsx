@@ -11,8 +11,6 @@ function Details() {
   const {cubeid, id} = useParams();
   const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
 
-  console.log('filim details ', data.data);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

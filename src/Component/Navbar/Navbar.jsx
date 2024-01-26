@@ -13,13 +13,10 @@ function Navbar() {
   const [userDetails, setUserDetails] = useState([])
   const {userData, setUserData} = useContext(UserContext);
 
-  console.log('from getMe ', data);
-
-  
   const UpdateUserDetails = () => {
     if(data){
       setUserDetails([data.data])
-      setUserData([data.data][0]);
+      setUserData([data.data]);
     }
     else{
       setUserDetails([])
@@ -34,7 +31,6 @@ function Navbar() {
     setIsClicked(!isClicked);
   };
 
-  console.log(userDetails);
   return (
     <div>
       <header>
@@ -65,16 +61,11 @@ function Navbar() {
             </li>
           </ul>
 
-          {/* {userData.length > 0 || (userDetails.length > 0)  ? <div className="userprofile">
-            <div>{(userData[0]?.userdetails?.name.split(" ")[0]) || (userDetails.name.slice(0, 7))}</div>
-            <button className="action_btn">Log Out</button>
-          </div> : <Link className="action_btn navmenu" to="/register">Sign in</Link>} */}
-
           {
             (() => {
               if(userData.length > 0){
                 return <div className="userprofile">
-                  <div>{(userData[0]?.userdetails?.name.split(" ")[0])}</div>
+                  <div>{(userData[0]?.name.split(" ")[0])}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }
@@ -132,7 +123,7 @@ function Navbar() {
             (() => {
               if(userData.length > 0){
                 return <div className="userprofilesmallwidth">
-                  <div>{(userData[0]?.userdetails?.name.split(" ")[0])}</div>
+                  <div>{(userData[0]?.name.split(" ")[0])}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGetSingleMoviesQuery } from "../../utils/api";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 
@@ -8,8 +8,6 @@ import { useContext } from "react";
 function Details() {
 
   const {cubeid, id} = useParams();
-  console.log(cubeid)
-
   const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
 
   if (isLoading) {
@@ -190,8 +188,8 @@ function Timing(){
 function ModalOpen({isOpen, onClose}){
   const redirect = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState([]);
-  const [fakesear, setfakeseat] = useState(['A2', 'G7']);
-  const {userData} = useContext(UserContext);
+  const [fakeseat, setfakeseat] = useState(['A2', 'G7']);
+  const {userData, setUserData} = useContext(UserContext);
 
   if (!isOpen) {
     return null;
@@ -254,6 +252,7 @@ function ModalOpen({isOpen, onClose}){
 
   else if (i <= 110){
     seat[i] = `K${k}`;
+    k++;
   
   }
 
@@ -277,13 +276,10 @@ function ModalOpen({isOpen, onClose}){
   })
  }
 
- const handlePayment = () => {
+ const handlePayment = (data) => {
+  console.log('array passing ', data);
   userData.length > 0 ? redirect('/payment') : redirect('/login');
  }
-
-
-
- console.log(selectedIndex);
 
   return(
     <div className="modalOpen">
@@ -292,7 +288,7 @@ function ModalOpen({isOpen, onClose}){
       
 
       <div className="seatlayout">
-        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakesear.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
+        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
         handleClickSeat(i)
         }}>
         {cl}
@@ -308,7 +304,7 @@ function ModalOpen({isOpen, onClose}){
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
 
-      {selectedIndex.length > 0 ? <button className="action_btn payment_button" onClick={handlePayment}>Proceed to payment</button> : ""}
+      {selectedIndex.length > 0 ? <button className="action_btn payment_button" onClick={() => handlePayment(selectedIndex)}>Proceed to payment</button> : ""}
     </div>
   )
 }

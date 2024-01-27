@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
@@ -10,23 +10,23 @@ function Navbar() {
 
   const redirect = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
-  const {data, error, isLoading} = useGetUserQuery();
-  const [userDetails, setUserDetails] = useState([])
+  const {data} = useGetUserQuery();
   const {userData, setUserData} = useContext(UserContext);
 
   useEffect(() => {
     if(data){
-      setUserDetails([data.data])
-      setUserData([data.data]);
+      setUserData([data.data][0]);
     }
   }, [data])
+
+  console.log("data in the navbar", userData);
 
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
   };
   
   console.log('userdata', userData);
-  console.log('userdetails', userDetails);
+
 
   return (
     <div>
@@ -60,18 +60,10 @@ function Navbar() {
 
           {
             (() => {
-              if(userDetails.length > 0){
-                console.log(userDetails[0].name);
-                return <div className="userprofile">
-                  <div>{(userDetails[0].name).slice(0, 8)}</div>
-                  <button className="action_btn">Log Out</button>
-                </div>
-              }
-              
 
-              else if(userData.length > 0){
+              if(userData.role){
                 return <div className="userprofile">
-                  <div>{userData[0].userdetails ? userData[0].userdetails.name : userData[0].name}</div>
+                  <div>{userData.name}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }
@@ -119,17 +111,9 @@ function Navbar() {
 
           {
             (() => {
-              if(userDetails.length > 0){
-                console.log(userDetails[0].name);
+              if(userData.role){
                 return <div className="userprofilesmallwidth">
-                  <div>{(userDetails[0].name).slice(0, 8)}</div>
-                  <button className="action_btn">Log Out</button>
-                </div>
-              }
-
-              else if(userData.length > 0){
-                return <div className="userprofilesmallwidth">
-                  <div>{userData[0].userdetails ? userData[0].userdetails.name : userData[0].name}</div>
+                  <div>{userData.name}</div>
                   <button className="action_btn">Log Out</button>
                 </div>
               }

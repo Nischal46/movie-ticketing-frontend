@@ -1,12 +1,11 @@
 import React from "react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../utils/api";
+
 
 function Movies() {
 
   const {data, error, isLoading} = useGetAllMoviesQuery();
-
 
   return (
     <div className="movies-page">

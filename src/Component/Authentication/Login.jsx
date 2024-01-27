@@ -3,6 +3,7 @@ import { useLoginUserMutation } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
+import { useGetUserQuery } from "../../utils/api";
 
 function Login(){
 
@@ -24,17 +25,24 @@ function Login(){
     async function handlesubmitLogin(e){
         e.preventDefault();
         try{
-            let userdetails = {};
+            // let userdetails = {};
             const response = await loginUser(formData);
 
-            userdetails.name = response.data.data.name;
-            userdetails.email = response.data.data.email;
-            userdetails.contact = response.data.data.contact;
-            userdetails.role = response.data.data.role;
-            userdetails.isVerified = true;
+        if(response){
+            // const userDataResponse = await useGetUserQuery();
+            // setUserData(userDataResponse.data);
+            console.log('login credentials ', response);
+            setUserData(response.data.data);
+            redirect('/');
+        }
 
-            setUserData((cv) => [{ userdetails}]);
-            redirect('/')
+            // userdetails.name = response.data.data.name;
+            // userdetails.email = response.data.data.email;
+            // userdetails.contact = response.data.data.contact;
+            // userdetails.role = response.data.data.role;
+            // userdetails.isVerified = true;
+
+            // setUserData((cv) => [{ userdetails}]);
         }
         catch(error){
             console.log('Login Failed', error);

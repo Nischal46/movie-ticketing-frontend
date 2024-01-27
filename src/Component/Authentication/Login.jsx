@@ -29,20 +29,11 @@ function Login(){
             const response = await loginUser(formData);
 
         if(response){
-            // const userDataResponse = await useGetUserQuery();
-            // setUserData(userDataResponse.data);
-            console.log('login credentials ', response);
             setUserData(response.data.data);
             redirect('/');
         }
 
-            // userdetails.name = response.data.data.name;
-            // userdetails.email = response.data.data.email;
-            // userdetails.contact = response.data.data.contact;
-            // userdetails.role = response.data.data.role;
-            // userdetails.isVerified = true;
 
-            // setUserData((cv) => [{ userdetails}]);
         }
         catch(error){
             console.log('Login Failed', error);

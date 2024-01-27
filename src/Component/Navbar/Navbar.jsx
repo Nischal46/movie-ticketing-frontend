@@ -19,14 +19,9 @@ function Navbar() {
     }
   }, [data])
 
-  console.log("data in the navbar", userData);
-
   const handleToggleClick = () => {
     setIsClicked(!isClicked);
   };
-  
-  console.log('userdata', userData);
-
 
   return (
     <div>

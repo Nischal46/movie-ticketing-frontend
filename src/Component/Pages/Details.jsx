@@ -10,6 +10,13 @@ function Details() {
 
   const {cubeid, id} = useParams();
   const {data, isLoading, isError} = useGetSingleMoviesQuery(id);
+  const {setFilmDetails} = useContext(UserContext);
+
+  useEffect(() => {
+    if (data) {
+        setFilmDetails(data);
+    }
+  }, [data, setFilmDetails]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -23,6 +30,7 @@ function Details() {
     return <div>Data not available</div>;
   }
 
+  console.log(data);
   return (
     <div className="details-page">
       <div className="movies-details-description">
@@ -296,7 +304,7 @@ function ModalOpen({isOpen, onClose}){
 
  const handlePayment = (data) => {
   console.log(selectedIndex);
-  userData.length > 0 ? redirect('/payment') : redirect('/login');
+  userData ? redirect('/payment') : redirect('/login');
  }
 
   return(

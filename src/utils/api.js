@@ -34,8 +34,15 @@ export const api = createApi({
             query: (id) => `/filim/${id}`
         }),
 
+        getCheckSeatAvailability: builder.mutation({
+            query: (seatdetails) => ({
+                url: '/booking/check-available',
+                method: "POST",
+                body: seatdetails
+            })
+        })
    
     })
 });
 
-export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation, useGetUserQuery} = api;
+export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation, useGetUserQuery, useGetCheckSeatAvailabilityMutation} = api;

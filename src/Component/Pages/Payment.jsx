@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
+import KhaltiCheckout from "khalti-checkout-web";
 
 function Payment() {
 

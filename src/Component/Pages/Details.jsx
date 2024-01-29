@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGetSingleMoviesQuery } from "../../utils/api";
+import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery } from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
@@ -116,15 +116,14 @@ function Timing(){
   const [isOpen, setIsOpen] = useState(false);
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
+  const [filmSchedule, setFilmSchedule] = useState({time: null, date: null});
 
 
 
   function CheckTodayDate(passdate){
-
+  
     const getHour = new Date().getHours();
     const getDate = new Date().getDate();
-
-    console.log(passdate, getDate, getHour);
 
     if(getDate === passdate && getHour >= 6 && getHour < 10){
       return setTiming([ '10 : 00 to 12 : 00 PM',
@@ -155,53 +154,97 @@ function Timing(){
       ]);
     } 
   }
+
   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   let TicketDate = [];
 
   for(let i = 0; i < 4; i++){
     TicketDate.push(`${months[new Date().getMonth()]} ${new Date().getDate() + i} ${new Date().getFullYear()}`)
   }
-  console.log(TicketDate);
 
-  const openModal = () => {
-    setIsOpen(true)
+  const openModal = (time) => {
+
+    setIsOpen(true);
+    setFilmSchedule(prev => ({
+      ...prev,
+      time: time
+    }))
   }
 
   const closeModal = () => {
     setIsOpen(false)
   }
 
-  const openTimingModal = (cl) => {
+  const openTimingModal = (cl, date) => {
     setTimingOpen(true);
     let today;
     today = cl.split(' ')[1];
     CheckTodayDate(+today)
+    setFilmSchedule(prev => ({
+      ...prev,
+      date: date
+    }))
   }
+
+  console.log('usestate date is ', filmSchedule);
+
+
 
   return  (
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
 
        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl)}>{cl}</li>)}
+        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)}>{cl}</li>)}
       </div>
      { timingOpen === true && <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
-        {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={openModal}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
+        {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={() => openModal(cl)}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
       </div>
 }
-        <ModalOpen isOpen={isOpen} onClose={closeModal} />
+        <ModalOpen isOpen={isOpen} onClose={closeModal} filmSchedule={filmSchedule} />
     </div>
   )
 }
 
-function ModalOpen({isOpen, onClose}){
+function ModalOpen({isOpen, onClose, filmSchedule}){
+  const [getCheckSeatAvailability] = useGetCheckSeatAvailabilityMutation();
   const redirect = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState([]);
-  const [fakeseat, setfakeseat] = useState(['A2', 'G7']);
+  const [fakeseat, setfakeseat] = useState([]);
   const {userData, setUserData} = useContext(UserContext);
+  const {filmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
 
-  console.log('The context api value is ', userData);
+  console.log('the context api film details ', filmDetails)
+  // let checkSeatStatus = {
+  //   filmName: filmDetails.data._id,
+  //   date: filmSchedule.date,
+    
+  // };
+  // console.log('details to hit api', checkSeatStatus);
+
+  useEffect(() => {
+    async function handleCheckSeatStautus(){
+      let seatdetails = {
+        filmName: "" || filmDetails.data?._id,
+        date: '2024-02-21',
+        
+      };
+      console.log('details to hit api', seatdetails);
+  
+      const response = await getCheckSeatAvailability(seatdetails);
+      // setfakeseat([response.data.data])
+      setfakeseat([response.data?.data.map(item => (item.seatNo))]
+      )
+      console.log('film and seat response is ', response);
+    }
+
+    handleCheckSeatStautus();
+  }, [isOpen])
+
+  console.log('seat data from database', fakeseat)
+
+
 
   if (!isOpen) {
     return null;
@@ -314,7 +357,7 @@ function ModalOpen({isOpen, onClose}){
       
 
       <div className="seatlayout">
-        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
+        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat[0].includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
         handleClickSeat(i, cl)
         }}>
         {cl}

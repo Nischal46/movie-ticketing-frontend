@@ -3,7 +3,7 @@ import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery } from "..
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
-import khaltiPic from "./../../../photos/khalti.png"
+
 
 
 function Details() {
@@ -234,9 +234,12 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   
       const response = await getCheckSeatAvailability(seatdetails);
       // setfakeseat([response.data.data])
-      setfakeseat([response.data?.data.map(item => (item.seatNo))]
-      )
-      console.log('film and seat response is ', response);
+
+      if (response && response.data && response.data.data) {
+        const updatedFakeseat = response.data.data.map(item => item.seatNo);
+        setfakeseat(updatedFakeseat);
+        console.log('Film and seat response:', response);
+      }
     }
 
     handleCheckSeatStautus();
@@ -357,7 +360,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       
 
       <div className="seatlayout">
-        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat[0].includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
+        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
         handleClickSeat(i, cl)
         }}>
         {cl}
@@ -374,7 +377,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       </div>
 
       {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => handlePayment(selectedIndex)}>
-        <img src={khaltiPic} /> Pay with Khalti</button> : ""}
+        Continue To Payment</button> : ""}
     </div>
   )
 }

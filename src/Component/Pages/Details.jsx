@@ -3,7 +3,8 @@ import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery } from "..
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
-
+import KhaltiCheckout from "khalti-checkout-web";
+import khaltiPic from "./../../../photos/khalti.png"
 
 
 function Details() {
@@ -30,7 +31,7 @@ function Details() {
     return <div>Data not available</div>;
   }
 
-  console.log(data);
+
   return (
     <div className="details-page">
       <div className="movies-details-description">
@@ -80,8 +81,6 @@ function Details() {
 }
 
 function Booking({cubeid, moviedata}){
-  console.log('cube id is', cubeid);
-  console.log(typeof cubeid);
   let cube;
 
   if(cubeid === cubeid){
@@ -106,8 +105,14 @@ function Booking({cubeid, moviedata}){
 }
 
 function Button({cube}){
+  const {setCube} = useContext(UserContext);
+
+  function handleCube(cube){
+    setCube(cube)
+  }
+
   return (
-    <button className="action_btn">{cube}</button>
+    <button className="action_btn" onClick={handleCube(cube)}>{cube}</button>
   )
 }
 
@@ -116,7 +121,8 @@ function Timing(){
   const [isOpen, setIsOpen] = useState(false);
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
-  const [filmSchedule, setFilmSchedule] = useState({time: null, date: null});
+  // const [filmSchedule, setFilmSchedule] = useState({time: null, date: null});
+  const {filmSchedule, setFilmSchedule} = useContext(UserContext);
 
 
 
@@ -186,10 +192,6 @@ function Timing(){
     }))
   }
 
-  console.log('usestate date is ', filmSchedule);
-
-
-
   return  (
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
@@ -212,16 +214,8 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const [selectedIndex, setSelectedIndex] = useState([]);
   const [fakeseat, setfakeseat] = useState([]);
   const {userData, setUserData} = useContext(UserContext);
-  const {filmDetails} = useContext(UserContext);
+  const {filmDetails, setFilmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
-
-  console.log('the context api film details ', filmDetails)
-  // let checkSeatStatus = {
-  //   filmName: filmDetails.data._id,
-  //   date: filmSchedule.date,
-    
-  // };
-  // console.log('details to hit api', checkSeatStatus);
 
   useEffect(() => {
     async function handleCheckSeatStautus(){
@@ -230,24 +224,17 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
         date: '2024-02-21',
         
       };
-      console.log('details to hit api', seatdetails);
   
       const response = await getCheckSeatAvailability(seatdetails);
-      // setfakeseat([response.data.data])
 
       if (response && response.data && response.data.data) {
         const updatedFakeseat = response.data.data.map(item => item.seatNo);
         setfakeseat(updatedFakeseat);
-        console.log('Film and seat response:', response);
       }
     }
 
     handleCheckSeatStautus();
   }, [isOpen])
-
-  console.log('seat data from database', fakeseat)
-
-
 
   if (!isOpen) {
     return null;
@@ -353,11 +340,39 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   userData ? redirect('/payment') : redirect('/login');
  }
 
+ let config = {
+  "publicKey": "test_public_key_f332dc601a0d42ac9fa2bfb4518e257b",
+          "productIdentity": filmDetails.data._id,
+          "productName": filmDetails.data.movieName,
+          "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+          "paymentPreference": [
+              "KHALTI",
+              "EBANKING",
+              "MOBILE_BANKING",
+              "CONNECT_IPS",
+              "SCT",
+              ],
+          "eventHandler": {
+              onSuccess (payload) {
+                  // hit merchant api for initiating verfication
+                  console.log(payload);
+                  payload ? redirect('/payment') : redirect('/login');
+              },
+              onError (error) {
+                  console.log(error);
+              },
+              onClose () {
+                  console.log('widget is closing');
+              }
+          }
+}
+
+const checkout = new KhaltiCheckout(config);
+
+
   return(
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
-
-      
 
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
@@ -365,7 +380,6 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
         }}>
         {cl}
         </div>))}
-
 
       <div className="screen">Screen</div>
       </div>
@@ -375,9 +389,12 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       <div style={{color: 'orange'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booking</p></div>
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
-
+{/* 
       {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => handlePayment(selectedIndex)}>
-        Continue To Payment</button> : ""}
+        Continue To Payment</button> : ""} */}
+
+    {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => checkout.show({amount: 10000})}>
+        <img src={khaltiPic} /> Pay with Khalti</button> : ""}
     </div>
   )
 }

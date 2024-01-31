@@ -121,6 +121,7 @@ function Timing(){
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
   const {filmSchedule, setFilmSchedule} = useContext(UserContext);
+  const [activeIndex, setActiveIndex] = useState(null);
 
 
 
@@ -172,6 +173,7 @@ function Timing(){
   const currentYear = currentDate.getFullYear();
 
 
+
   for (let i = 0; i < 4; i++) {
     let newDay = currentDate.getDate() + i;
     let newMonth = currentMonth;
@@ -218,12 +220,19 @@ function Timing(){
     }))
   }
 
+  const handleClickIndex = (i) => {
+    setActiveIndex(i)
+  }
+
   return  (
     <div>
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
 
        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl, DisplayDate[i])}>{cl}</li>)}
+        {TicketDate.map((cl, i) => <li key={i} className={`date ${activeIndex === i ? 'dateActive' : ''}`} onClick={() => {
+          openTimingModal(cl, DisplayDate[i])
+          handleClickIndex(i)
+        }}>{cl}</li>)}
       </div>
      { timingOpen === true && <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
         {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={() => openModal(cl)}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
@@ -249,7 +258,8 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       let seatdetails = {
         filmName: "" || filmDetails.data?._id,
         date: "" || filmSchedule.date,
-        
+        time: "" || filmSchedule.time
+         
       };
   
       if(isOpen){
@@ -414,7 +424,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
 
   return(
     <div className="modalOpen">
-      <span onClick={onClose}>&times;</span>
+      <span onClick={onClose && setSeatArray([])}>&times;</span>
 
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {

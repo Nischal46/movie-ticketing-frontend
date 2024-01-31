@@ -424,7 +424,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
 
   return(
     <div className="modalOpen">
-      <span onClick={onClose && setSeatArray([])}>&times;</span>
+      <span onClick={onClose}>&times;</span>
 
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {

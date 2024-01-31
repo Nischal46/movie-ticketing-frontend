@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery } from "../../utils/api";
+import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery, useBookSeatMutation } from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
@@ -89,7 +89,6 @@ function Booking({cubeid, moviedata}){
     }
   };
 
-  console.log(cube);
   return (
     <div>
       <h3>Show Available At:</h3>
@@ -112,7 +111,7 @@ function Button({cube}){
   }
 
   return (
-    <button className="action_btn" onClick={handleCube(cube)}>{cube}</button>
+    <button className="action_btn" onClick={() => handleCube(cube)}>{cube}</button>
   )
 }
 
@@ -121,7 +120,6 @@ function Timing(){
   const [isOpen, setIsOpen] = useState(false);
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
-  // const [filmSchedule, setFilmSchedule] = useState({time: null, date: null});
   const {filmSchedule, setFilmSchedule} = useContext(UserContext);
 
 
@@ -132,19 +130,18 @@ function Timing(){
     const getDate = new Date().getDate();
 
     if(getDate === passdate && getHour >= 6 && getHour < 10){
-      return setTiming([ '10 : 00 to 12 : 00 PM',
-      '2 : 00 to 4 : 00 PM',
-      '6 : 00 to 8 : 00 PM'])
+      return setTiming([ '10:00 to 12:00 PM',
+      '2:00 to 4:00 PM',
+      '6:00 to 8:00 PM'])
     }
     
     else if(getDate === passdate && getHour >= 10 && getHour < 16){
-      return setTiming([ '2 : 00 to 4 : 00 PM',
-      '6 : 00 to 8 : 00 PM'])
+      return setTiming([ '2:00 to 4:00 PM',
+      '6:00 to 8:00 PM'])
     }
     
     else if(getDate === passdate && getHour >= 16 && getHour < 20){
-      console.log('trur trur');
-      return setTiming(['6 : 00 to 8 : 00 PM'])
+      return setTiming(['6:00 to 8:00 PM'])
     }
 
     else if(getDate === passdate && getHour >= 20){
@@ -153,19 +150,47 @@ function Timing(){
     
     else {
       return setTiming([
-        '6 : 00 to 8 : 00 AM',
-        '10 : 00 to 12 : 00 PM',
-        '2 : 00 to 4 : 00 PM',
-        '6 : 00 to 8 : 00 PM'
+        '6:00 to 8:00 AM',
+        '10:00 to 12:00 PM',
+        '2:00 to 4:00 PM',
+        '6:00 to 8:00 PM'
       ]);
     } 
   }
 
   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   let TicketDate = [];
+  let DisplayDate = [];
 
-  for(let i = 0; i < 4; i++){
-    TicketDate.push(`${months[new Date().getMonth()]} ${new Date().getDate() + i} ${new Date().getFullYear()}`)
+  // for(let i = 0; i < 4; i++){
+    
+  //   TicketDate.push(`${months[new Date().getMonth() + i]} ${new Date().getDate() + i} ${new Date().getFullYear()}`)
+  // }
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+
+  for (let i = 0; i < 4; i++) {
+    let newDay = currentDate.getDate() + i;
+    let newMonth = currentMonth;
+    let newYear = currentYear;
+
+    let count = 0
+    // Check if the new day exceeds the number of days in the current month
+    if (newDay > new Date(newYear, newMonth + 1, 0).getDate()) {
+      newDay = 0;
+      newMonth += 1;
+      if (newMonth > 11) {
+        newMonth = 0;
+        newYear += 1;
+      }
+    }
+
+    TicketDate.push(`${months[newMonth]} ${newDay + i} ${newYear}`);
+    DisplayDate.push(`${newYear}-${newMonth + 1}-${newDay + i}`)
+
   }
 
   const openModal = (time) => {
@@ -182,6 +207,7 @@ function Timing(){
   }
 
   const openTimingModal = (cl, date) => {
+    console.log('selected data is', date);
     setTimingOpen(true);
     let today;
     today = cl.split(' ')[1];
@@ -197,7 +223,7 @@ function Timing(){
        <h4 style={{margin: '1rem 0'}}>Timing: </h4>
 
        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)}>{cl}</li>)}
+        {TicketDate.map((cl, i) => <li key={i} className="date" onClick={() => openTimingModal(cl, DisplayDate[i])}>{cl}</li>)}
       </div>
      { timingOpen === true && <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flexDirection: 'column'}}>
         {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={() => openModal(cl)}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
@@ -216,21 +242,25 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const {userData, setUserData} = useContext(UserContext);
   const {filmDetails, setFilmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
+  const [bookSeat] = useBookSeatMutation();
 
   useEffect(() => {
     async function handleCheckSeatStautus(){
       let seatdetails = {
         filmName: "" || filmDetails.data?._id,
-        date: '2024-02-21',
+        date: "" || filmSchedule.date,
         
       };
   
-      const response = await getCheckSeatAvailability(seatdetails);
-
+      if(isOpen){
+        const response = await getCheckSeatAvailability(seatdetails);
+        console.log(response);
+      
       if (response && response.data && response.data.data) {
         const updatedFakeseat = response.data.data.map(item => item.seatNo);
         setfakeseat(updatedFakeseat);
       }
+    }
     }
 
     handleCheckSeatStautus();
@@ -317,7 +347,6 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
     }
     else{
       const removedSeat = pd.filter(x => x !== index);
-      console.log('Already insert');
       return removedSeat;
     }
   })
@@ -331,13 +360,6 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       return removedSeat;
     }
   })
- }
-
- console.log('seat array is ', seatArray);
-
- const handlePayment = (data) => {
-  console.log(selectedIndex);
-  userData ? redirect('/payment') : redirect('/login');
  }
 
  let config = {
@@ -354,9 +376,29 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
               ],
           "eventHandler": {
               onSuccess (payload) {
-                  // hit merchant api for initiating verfication
                   console.log(payload);
-                  payload ? redirect('/payment') : redirect('/login');
+
+                  async function KhaltiPayment(){
+                    const bookingDetails = {
+                      filim: payload.product_identity, 
+                      price: filmDetails.data.price, 
+                      seatNo: seatArray, 
+                      bookingDate: filmSchedule.date, 
+                      showTime: filmSchedule.time, 
+                      amount: payload.amount,
+                      token: payload.token, 
+                      transactionId: payload.idx
+                    }
+
+                    const requestPayment = await bookSeat(bookingDetails);
+                    if(requestPayment) redirect('/payment');
+
+                  }
+
+                if(payload){
+                  KhaltiPayment();
+                }
+                
               },
               onError (error) {
                   console.log(error);
@@ -367,7 +409,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
           }
 }
 
-const checkout = new KhaltiCheckout(config);
+  const checkout = new KhaltiCheckout(config);
 
 
   return(
@@ -389,9 +431,6 @@ const checkout = new KhaltiCheckout(config);
       <div style={{color: 'orange'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booking</p></div>
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>
       </div>
-{/* 
-      {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => handlePayment(selectedIndex)}>
-        Continue To Payment</button> : ""} */}
 
     {selectedIndex.length > 0 ? <button className="paymentbutton" onClick={() => checkout.show({amount: 10000})}>
         <img src={khaltiPic} /> Pay with Khalti</button> : ""}

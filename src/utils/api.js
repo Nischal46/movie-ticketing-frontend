@@ -40,9 +40,17 @@ export const api = createApi({
                 method: "POST",
                 body: seatdetails
             })
+        }),
+
+        bookSeat: builder.mutation({
+            query: (bookingdata) => ({
+                url: '/booking/khalti',
+                method: "POST",
+                body: bookingdata
+            })
         })
    
     })
 });
 
-export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation, useGetUserQuery, useGetCheckSeatAvailabilityMutation} = api;
+export const {useGetAllMoviesQuery, useGetSingleMoviesQuery, useRegisterUserMutation, useLoginUserMutation, useGetUserQuery, useGetCheckSeatAvailabilityMutation, useBookSeatMutation} = api;

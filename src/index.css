@@ -593,6 +593,10 @@ ul li {
 
   }
 
+  .main-movies-option{
+    font-size: 18px;
+  }
+
   .movies-page p {
     text-align: center;
     font-size: 20px;
@@ -660,6 +664,10 @@ ul li {
   .dropdown_menu {
     left: 2rem;
     width: unset;
+  }
+
+  .main-movies-option{
+    font-size: 16px;
   }
 
   .table-wrapper {

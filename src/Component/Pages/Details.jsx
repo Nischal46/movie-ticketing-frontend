@@ -373,7 +373,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
  }
 
  let config = {
-  "publicKey": "test_public_key_f332dc601a0d42ac9fa2bfb4518e257b",
+  "publicKey": `${import.meta.env.VITE_KHALTI_SECRET}`,
           "productIdentity": filmDetails.data._id,
           "productName": filmDetails.data.movieName,
           "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
@@ -436,7 +436,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       <div className="screen">Screen</div>
       </div>
 
-      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
+      <div className="information-seat" style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
       <div style={{color: 'red'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Reserved</p></div>
       <div style={{color: 'orange'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Booking</p></div>
       <div style={{color: 'green'}}><i className="fa fa-stop" aria-hidden="true" style={{fontSize: '36px'}}></i><p style={{color: 'white'}}>Available</p></div>

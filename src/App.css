@@ -148,6 +148,8 @@
     margin: 10px 5px;
     text-align: center;
     font-weight: 800;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 .seatbooked{
@@ -240,6 +242,17 @@ margin: 0 2rem;
     left: 0;
 }
 
+.date{
+    font-size: 15px;
+    padding: 0.6rem;
+    border-radius: 15px;
+}
+
+.timing{
+    font-size: 15px;
+    padding: 0.6rem 0;
+}
+
 .seat{
     font-weight: 300;
     color: black;
@@ -249,12 +262,13 @@ margin: 0 2rem;
 
 .seatlayout{
     display: flex;  
-    margin: 0 2rem; 
+    margin: 0 1rem; 
     flex-wrap: wrap; 
     justify-content: space-between; 
     align-items: center; 
     position: relative; 
     padding: 2rem 0;
+    gap: 3px;
 }
 
 .screen{
@@ -271,9 +285,64 @@ margin: 0 2rem;
 }
 }
 
+@media screen and (max-width: 710px) {
+    .seat{
+        width: 43px;
+    }
+    .seatlayout{
+        gap: 2px
+    }
+}
+
+@media screen and (max-width: 685px) {
+    .seat{
+        width: 42px;
+    }
+}
+
+@media screen and (max-width: 635px) {
+    .seat{
+        width: 39px;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .seat{
+        width: 37px;
+    }
+    .seatlayout{
+        gap: 1.5px;
+    }
+}
+
+@media screen and (max-width: 563px) {
+    .seat{
+        width: 34px;
+    }
+    .seatlayout{
+        gap: 1.1px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    .seat{
+        width: 32px;
+    }
+    .seatlayout{
+        gap: 1.1px;
+    }
+}
+
 @media (max-width: 500px) {
     .modalOpen{
         left: 0;
+    }
+
+    .date{
+        font-size: 12px;
+        font-weight: 600;
+        padding: 0.4rem;
+        border-radius: 10px;
     }
     
     .seat{
@@ -282,6 +351,11 @@ margin: 0 2rem;
         color: black;
         width: 27px;
         margin: 10px 1px;
+    }
+
+    .timing{
+        font-size: 15px;
+        padding: 0.4rem 0;
     }
     .seatlayout{
         margin: 0 1rem;

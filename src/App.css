@@ -90,8 +90,8 @@
     top: 0;
     transition: all 0.5 linear;
     overflow-y: scroll;
-    
 }
+
 .information-seat{
     margin-bottom: 1rem;
 }
@@ -180,13 +180,12 @@
     color: white;
     font-weight: 700;
     justify-content: space-between;
-    padding: 0.5rem;
-    border-radius: 5px;
+    padding: 0.3rem;
+    border-radius: 10px;
     border: none;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin-top: 2.5rem;
     position: absolute;
-    left: 40%;
+    right: 5%;
 }
 .paymentbutton img{
     width: 50px;
@@ -209,13 +208,62 @@ margin: 0 2rem;
 
 /* tablet responsive view*/
 
+@media screen and (max-width: 1850px) {
+    .seat{
+        width: 48px;
+    }
+    .seatlayout{
+        gap: 3px;
+    }
+}
+
+@media screen and (max-width: 1740px) {
+    .seat{
+        width: 44px;
+    }
+
+}
+
+@media screen and (max-width: 1640px) {
+    .seat{
+        width: 40px;
+    }
+    .seatlayout{
+        gap: 2.5px;
+    }
+}
+
+@media screen and (max-width: 1530px) {
+    .seat{
+        width: 35px;
+    }
+}
+
+
+
+@media screen and (max-width: 1407px) {
+    .seat{
+        width: 33px;
+    }
+    .seatlayout{
+        font-size: 16px;
+        gap: 2.3px;
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .seat{
+        width: 31px;
+    }
+}
+
 @media (max-width: 1280px) {
     .modalOpen{
         left: 0;
     }
 
     .seat{
-       font-weight: 300;
+       font-weight: 500;
        width: 41px;
        margin: 10px 1px;
        text-align: center;
@@ -231,6 +279,69 @@ margin: 0 2rem;
         position: relative; 
         padding: 2rem 0;
     }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .seat{
+            width: 35px;
+        }
+        .seatlayout{
+            gap: 3px;
+        }
+    }
+
+    @media screen and (max-width: 1120px) {
+        .seat{
+            width: 32px;
+        }
+        .seatlayout{
+            gap: 3px;
+        }
+    }
+
+    @media screen and (max-width: 1044px) {
+        .seat{
+            width: 30px;
+        }
+        .seatlayout{
+            gap: 2.8px;
+        }
+    }
+
+    @media screen and (max-width: 990px) {
+        .seat{
+            width: 64px;
+        }
+        .seatlayout{
+            gap: 3px;
+        }
+    }
+
+    @media screen and (max-width: 920px) {
+        .seat{
+            width: 60px;
+        }
+        .seatlayout{
+            gap: 3px;
+        }
+    }
+
+    @media screen and (max-width: 870px) {
+        .seat{
+            width: 56px;
+        }
+        .seatlayout{
+            gap: 3px;
+        }
+    }
+
+    @media screen and (max-width: 824px) {
+        .seat{
+            width: 53px;
+        }
+        .seatlayout{
+            gap: 2.8px;
+        }
     }
 
 @media screen and (max-width: 770px) {

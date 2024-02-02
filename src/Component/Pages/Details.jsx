@@ -244,6 +244,30 @@ function Timing(){
   )
 }
 
+const socket = io.connect('http://localhost:8000');
+
+let seatarray = [];
+function socketFunction(cl){
+  if(!seatarray.includes(cl)){
+    seatarray.push(cl);
+ // setSelectedSeats(res => [...res, seatno])
+//  socket.emit('recordAction', { action: seatarray });
+
+  }
+
+  else{
+    seatarray = seatarray.filter(x => x !== cl)
+    
+  }
+
+  socket.emit('recordAction', { action: seatarray });
+ 
+ console.log(seatarray);
+ //  console.log(e.target.innerText);
+
+}
+
+
 function ModalOpen({isOpen, onClose, filmSchedule}){
   const [getCheckSeatAvailability] = useGetCheckSeatAvailabilityMutation();
   const redirect = useNavigate();
@@ -253,6 +277,9 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const {filmDetails, setFilmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
   const [bookSeat] = useBookSeatMutation();
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  // const socket = io.connect('http://localhost:8000');
 
   useEffect(() => {
     async function handleCheckSeatStautus(){
@@ -271,10 +298,13 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
         const updatedFakeseat = response.data.data.map(item => item.seatNo);
         setfakeseat(updatedFakeseat);
       }
+
+      
     }
     }
 
     handleCheckSeatStautus();
+    
   }, [isOpen])
 
   if (!isOpen) {
@@ -372,9 +402,12 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
     }
   })
 
-  const socket = io('http://localhost:8000');
-  socket.emit('recordAction', { action: 'Button clicked' });
  }
+
+
+
+
+
 
  let config = {
   "publicKey": `${import.meta.env.VITE_KHALTI_SECRET}`,
@@ -433,6 +466,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       <div className="seatlayout">
         {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
         handleClickSeat(i, cl)
+        socketFunction(cl)
         }}>
         {cl}
         </div>))}

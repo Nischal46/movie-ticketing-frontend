@@ -307,6 +307,16 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
     
   }, [isOpen])
 
+  useEffect(() => {
+    socket.on('alert', (msg) => {
+      console.log('one client has changed');
+    })
+
+    return () => {
+      socket.disconnect();
+    }
+  }, [socket])
+
   if (!isOpen) {
     return null;
   }

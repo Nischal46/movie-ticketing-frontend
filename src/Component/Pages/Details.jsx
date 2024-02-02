@@ -5,6 +5,7 @@ import UserContext from "../../context/UserContext";
 import { useContext } from "react";
 import KhaltiCheckout from "khalti-checkout-web";
 import khaltiPic from "./../../../photos/khalti.png"
+import io from "socket.io-client"
 
 
 function Details() {
@@ -370,6 +371,9 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       return removedSeat;
     }
   })
+
+  const socket = io('http://localhost:8000');
+  socket.emit('recordAction', { action: 'Button clicked' });
  }
 
  let config = {

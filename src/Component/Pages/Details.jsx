@@ -247,21 +247,16 @@ function Timing(){
 const socket = io.connect('http://localhost:8000');
 
 let seatarray = [];
-function socketFunction(cl){
+function socketFunction(cl, userdetails){
   if(!seatarray.includes(cl)){
     seatarray.push(cl);
  // setSelectedSeats(res => [...res, seatno])
 //  socket.emit('recordAction', { action: seatarray });
-
   }
-
   else{
     seatarray = seatarray.filter(x => x !== cl)
-    
   }
-
-  socket.emit('recordAction', { action: seatarray });
- 
+  socket.emit('recordAction', { action: seatarray, user: userdetails });
  console.log(seatarray);
  //  console.log(e.target.innerText);
 
@@ -277,7 +272,9 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const {filmDetails, setFilmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
   const [bookSeat] = useBookSeatMutation();
-  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [socketResponse, setSocketResponse] = useState([]);
+
+  console.log('user details ', userData);
 
   // const socket = io.connect('http://localhost:8000');
 
@@ -286,8 +283,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
       let seatdetails = {
         filmName: "" || filmDetails.data?._id,
         date: "" || filmSchedule.date,
-        time: "" || filmSchedule.time
-         
+        time: "" || filmSchedule.time   
       };
   
       if(isOpen){
@@ -308,14 +304,24 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   }, [isOpen])
 
   useEffect(() => {
-    socket.on('alert', (msg) => {
-      console.log('one client has changed');
-    })
 
-    return () => {
-      socket.disconnect();
-    }
+    if(response[1] !== userData._id){
+    socket.on('alert', (response) => {
+      console.log(response);
+     
+      setSocketResponse(response)
+      console.log('from server response', response);
+      
+    })
+  }
+
+    // return () => {
+    //   socket.disconnect();
+    // }
   }, [socket])
+
+  console.log('socket response is ', socketResponse);
+  console.log('the socket response from user id is ', socketResponse[1]);
 
   if (!isOpen) {
     return null;
@@ -469,14 +475,22 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const checkout = new KhaltiCheckout(config);
 
 
+
+
   return(
     <div className="modalOpen">
       <span onClick={onClose}>&times;</span>
 
       <div className="seatlayout">
-        {seat.map((cl, i) => (<div key={i} className={`seat ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}`} onClick={() => {
+        {seat.map((cl, i) => (
+        <div key={i} 
+        className={`seat 
+        ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} 
+        ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''} 
+        ${socketResponse.length > 0 ? socketResponse[0]?.includes(cl) ? socketResponse[1] === userData._id ? 'seatbooked' : 'seatalcurrentlyselected' : 'seatavailable' : 'seatavailable'}`} 
+        onClick={() => {
         handleClickSeat(i, cl)
-        socketFunction(cl)
+        socketFunction(cl, userData._id)
         }}>
         {cl}
         </div>))}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery, useBookSeatMutation } from "../../utils/api";
+import { useGetCheckSeatAvailabilityMutation, useGetSingleMoviesQuery, useBookSeatMutation, useGetUserQuery } from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { useContext } from "react";
@@ -271,6 +271,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   const {userData, setUserData} = useContext(UserContext);
   const {filmDetails, setFilmDetails} = useContext(UserContext);
   const {seatArray, setSeatArray} = useContext(UserContext);
+  const {data} = useGetUserQuery();
   const [bookSeat] = useBookSeatMutation();
   const [socketResponse, setSocketResponse] = useState([]);
 
@@ -305,15 +306,32 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
 
   useEffect(() => {
 
-    if(response[1] !== userData._id){
-    socket.on('alert', (response) => {
-      console.log(response);
-     
-      setSocketResponse(response)
-      console.log('from server response', response);
+    if(data){
+      setUserData([data.data][0]);
+    }
+    socket.on('alert', (responseJSON) => {
+
+      console.log(userData._id);
+      
+
+      if(responseJSON.hasOwnProperty(userData._id)){
+        console.log('Yes it consists');
+        delete responseJSON[userData._id];
+      }
+      else{
+        console.log("not consisted");
+      }
+
+      const finalseatarray = Object.values(responseJSON).reduce((acc, arr) => {
+        return acc.concat(arr);
+      }, [])
+
+      console.log('from backend', finalseatarray);
+      setSocketResponse(finalseatarray);
+    
       
     })
-  }
+
 
     // return () => {
     //   socket.disconnect();
@@ -321,7 +339,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
   }, [socket])
 
   console.log('socket response is ', socketResponse);
-  console.log('the socket response from user id is ', socketResponse[1]);
+  // console.log('the socket response from user id is ', socketResponse[1]);
 
   if (!isOpen) {
     return null;
@@ -486,8 +504,9 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
         <div key={i} 
         className={`seat 
         ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} 
-        ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''} 
-        ${socketResponse.length > 0 ? socketResponse[0]?.includes(cl) ? socketResponse[1] === userData._id ? 'seatbooked' : 'seatalcurrentlyselected' : 'seatavailable' : 'seatavailable'}`} 
+        ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}
+        ${socketResponse.includes(cl) ? 'seatalcurrentlyselected' : 'seatbooked'}
+       `} 
         onClick={() => {
         handleClickSeat(i, cl)
         socketFunction(cl, userData._id)
@@ -509,5 +528,5 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
     </div>
   )
 }
-
+// ${socketResponse.length > 0 ? socketResponse[0]?.includes(cl) ? socketResponse[1] === userData._id ? 'seatbooked' : 'seatalcurrentlyselected' : 'seatavailable' : 'seatavailable'}
 export default Details;

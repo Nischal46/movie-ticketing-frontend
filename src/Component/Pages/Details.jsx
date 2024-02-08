@@ -116,7 +116,7 @@ function Button({cube}){
   )
 }
 
-function Timing(){
+function Timing({cubedetails}){
   const { setUserData } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [timingOpen, setTimingOpen] = useState(false);
@@ -239,14 +239,29 @@ function Timing(){
         {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={() => openModal(cl)}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
       </div>
 }
-        <ModalOpen isOpen={isOpen} onClose={closeModal} filmSchedule={filmSchedule} />
+        <ModalOpen isOpen={isOpen} onClose={closeModal} filmSchedule={filmSchedule} cube={cubedetails} />
     </div>
   )
 }
 
-const socket = io.connect('http://localhost:8000');
+let socket;
+
+function fetchingSocketData(conn){
+  return io.connect(`http://localhost:8000/${conn}`);
+}
+// let socket1 = io.connect('http://localhost:8000/connection1');
+// let socket2 = io.connect('http://localhost:8000/connection2');
+// let socket3 = io.connect('http://localhost:8000/connection3');
+
+// const socket = io.connect('http://localhost:8000/'); 
+
+function connectionNo(conn){
+   socket = io.connect(`http://localhost:8000/${conn}`);
+  console.log(`http://localhost:8000/${conn}`);
+}                                                                               
 
 let seatarray = [];
+
 function socketFunction(cl, userdetails){
   if(!seatarray.includes(cl)){
     seatarray.push(cl);
@@ -256,14 +271,15 @@ function socketFunction(cl, userdetails){
   else{
     seatarray = seatarray.filter(x => x !== cl)
   }
+
   socket.emit('recordAction', { action: seatarray, user: userdetails });
- console.log(seatarray);
+  console.log(seatarray);
  //  console.log(e.target.innerText);
 
 }
 
 
-function ModalOpen({isOpen, onClose, filmSchedule}){
+function ModalOpen({isOpen, onClose, filmSchedule, cube}){
   const [getCheckSeatAvailability] = useGetCheckSeatAvailabilityMutation();
   const redirect = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState([]);
@@ -277,6 +293,22 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
 
   console.log('user details ', userData);
 
+  console.log('cube details is ', cube);
+
+  if(cube.cube === 'CUBE 1'){
+    connectionNo('connection1');
+
+  }
+
+  else if(cube.cube === 'CUBE 2'){
+    connectionNo('connection2');
+
+  }
+
+  else{
+    connectionNo('connection3');
+  }
+  
   // const socket = io.connect('http://localhost:8000');
 
   useEffect(() => {
@@ -306,13 +338,25 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
 
   useEffect(() => {
 
+    let socketconn;
+
+    if(cube.cube === 'CUBE 1'){
+      socketconn = fetchingSocketData('connection1')
+    }
+    else if(cube.cube === 'CUBE 2'){
+      socketconn = fetchingSocketData('connection2')
+    }
+    else {
+      socketconn = fetchingSocketData('connection3')
+    }
+
     if(data){
       setUserData([data.data][0]);
     }
-    socket.on('alert', (responseJSON) => {
+
+    socketconn.on('alert', (responseJSON) => {
 
       console.log(userData._id);
-      
 
       if(responseJSON.hasOwnProperty(userData._id)){
         console.log('Yes it consists');
@@ -336,7 +380,7 @@ function ModalOpen({isOpen, onClose, filmSchedule}){
     // return () => {
     //   socket.disconnect();
     // }
-  }, [socket])
+  }, [fetchingSocketData])
 
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);

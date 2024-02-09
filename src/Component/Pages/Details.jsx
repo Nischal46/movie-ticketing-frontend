@@ -336,6 +336,8 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     
   }, [isOpen])
 
+
+
   useEffect(() => {
 
     let socketconn;
@@ -355,6 +357,8 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     }
 
     socketconn.on('alert', (responseJSON) => {
+
+      console.log(responseJSON);
 
       console.log(userData._id);
 

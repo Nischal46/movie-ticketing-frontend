@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllMoviesQuery } from "../../utils/api";
+
 
 
 function Movies() {

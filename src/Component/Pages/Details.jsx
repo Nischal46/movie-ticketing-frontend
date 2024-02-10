@@ -81,6 +81,8 @@ function Details() {
   );
 }
 
+
+
 function Booking({cubeid, moviedata}){
   let cube;
 
@@ -104,6 +106,8 @@ function Booking({cubeid, moviedata}){
   )
 }
 
+
+
 function Button({cube}){
   const {setCube} = useContext(UserContext);
 
@@ -115,6 +119,9 @@ function Button({cube}){
     <button className="action_btn" onClick={() => handleCube(cube)}>{cube}</button>
   )
 }
+
+
+
 
 function Timing({cubedetails}){
   const { setUserData } = useContext(UserContext);
@@ -163,11 +170,6 @@ function Timing({cubedetails}){
   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   let TicketDate = [];
   let DisplayDate = [];
-
-  // for(let i = 0; i < 4; i++){
-    
-  //   TicketDate.push(`${months[new Date().getMonth() + i]} ${new Date().getDate() + i} ${new Date().getFullYear()}`)
-  // }
 
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
@@ -244,11 +246,13 @@ function Timing({cubedetails}){
   )
 }
 
+
+
 let socket;
 
-function fetchingSocketData(conn){
-  return io.connect(`http://localhost:8000/${conn}`);
-}
+// function fetchingSocketData(conn){
+//   return io.connect(`http://localhost:8000/${conn}`);
+// }
 // let socket1 = io.connect('http://localhost:8000/connection1');
 // let socket2 = io.connect('http://localhost:8000/connection2');
 // let socket3 = io.connect('http://localhost:8000/connection3');
@@ -262,7 +266,8 @@ function connectionNo(conn){
 
 let seatarray = [];
 
-function socketFunction(cl, userdetails){
+function socketFunction(cl, userdetails, date, time){
+  console.log(cl, userdetails, date, time)
   if(!seatarray.includes(cl)){
     seatarray.push(cl);
  // setSelectedSeats(res => [...res, seatno])
@@ -272,10 +277,7 @@ function socketFunction(cl, userdetails){
     seatarray = seatarray.filter(x => x !== cl)
   }
 
-  socket.emit('recordAction', { action: seatarray, user: userdetails });
-  console.log(seatarray);
- //  console.log(e.target.innerText);
-
+  socket.emit('recordAction', { action: seatarray, user: userdetails, date, time });
 }
 
 
@@ -309,8 +311,6 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     connectionNo('connection3');
   }
   
-  // const socket = io.connect('http://localhost:8000');
-
   useEffect(() => {
     async function handleCheckSeatStautus(){
       let seatdetails = {
@@ -336,31 +336,25 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     
   }, [isOpen])
 
-
-
   useEffect(() => {
 
-    let socketconn;
+    let socketconn = io.connect(`http://localhost:8000/`);
 
-    if(cube.cube === 'CUBE 1'){
-      socketconn = fetchingSocketData('connection1')
-    }
-    else if(cube.cube === 'CUBE 2'){
-      socketconn = fetchingSocketData('connection2')
-    }
-    else {
-      socketconn = fetchingSocketData('connection3')
-    }
+    // if(cube.cube === 'CUBE 1'){
+    //   socketconn = fetchingSocketData('connection1')
+    // }
+    // else if(cube.cube === 'CUBE 2'){
+    //   socketconn = fetchingSocketData('connection2')
+    // }
+    // else {
+    //   socketconn = fetchingSocketData('connection3')
+    // }
 
     if(data){
       setUserData([data.data][0]);
     }
 
     socketconn.on('alert', (responseJSON) => {
-
-      console.log(responseJSON);
-
-      console.log(userData._id);
 
       if(responseJSON.hasOwnProperty(userData._id)){
         console.log('Yes it consists');
@@ -374,17 +368,40 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
         return acc.concat(arr);
       }, [])
 
-      console.log('from backend', finalseatarray);
+      // const separatedData = finalseatarray.reduce((acc, obj) => {
+      //   const key = `${obj.date}-${obj.time}`;
+      //   if (!acc[key]) {
+      //     acc[key] = {};
+      //   }
+      //   if (!acc[key][obj.connectionNo]) {
+      //     acc[key][obj.connectionNo] = [];
+      //   }
+      //   acc[key][obj.connectionNo].push(obj);
+      //   return acc;
+      // }, {});
+
+      // let newarray = [];
+      // for(let i = 0; i < finalseatarray.length; i++){
+      //   if(finalseatarray[i].connectionNo === 'thirdconnection'){
+      //     newarray[i] = finalseatarray[i];        }
+      // }
+
+      // console.log(newarray);
+
+      // console.log('from backend', separatedData);
+
+      // const filterdata = finalseatarray.filter(x => x.date === filmDetails.date);
+      // console.log('filter', newarray);
       setSocketResponse(finalseatarray);
     
       
     })
 
 
-    // return () => {
-    //   socket.disconnect();
-    // }
-  }, [fetchingSocketData])
+    return () => {
+      socket.disconnect();
+    }
+  }, [setSocketResponse])
 
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);
@@ -557,7 +574,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
        `} 
         onClick={() => {
         handleClickSeat(i, cl)
-        socketFunction(cl, userData._id)
+        socketFunction(cl, userData._id, filmSchedule.date, filmSchedule.time)
         }}>
         {cl}
         </div>))}

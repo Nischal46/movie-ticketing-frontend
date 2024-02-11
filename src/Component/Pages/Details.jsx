@@ -266,8 +266,8 @@ function connectionNo(conn){
 
 let seatarray = [];
 
-function socketFunction(cl, userdetails, date, time){
-  console.log(cl, userdetails, date, time)
+function socketFunction(cl, userdetails, date, time, filmDetails){
+  console.log(cl, userdetails, date, time, filmDetails)
   if(!seatarray.includes(cl)){
     seatarray.push(cl);
  // setSelectedSeats(res => [...res, seatno])
@@ -277,7 +277,7 @@ function socketFunction(cl, userdetails, date, time){
     seatarray = seatarray.filter(x => x !== cl)
   }
 
-  socket.emit('recordAction', { action: seatarray, user: userdetails, date, time });
+  socket.emit('recordAction', { action: seatarray, user: userdetails, date, time, movie: filmDetails });
 }
 
 
@@ -293,9 +293,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
   const [bookSeat] = useBookSeatMutation();
   const [socketResponse, setSocketResponse] = useState([]);
 
-  console.log('user details ', userData);
-
-  console.log('cube details is ', cube);
+ console.log('film details', filmDetails);
 
   if(cube.cube === 'CUBE 1'){
     connectionNo('connection1');
@@ -350,11 +348,30 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     //   socketconn = fetchingSocketData('connection3')
     // }
 
+    let actualfetchingMovie = [];
+
     if(data){
       setUserData([data.data][0]);
     }
 
     socketconn.on('alert', (responseJSON) => {
+
+      console.log('response movie data is', responseJSON);
+
+      if(filmDetails.data?._id || data.data._id === responseJSON[0].movie){
+        console.log(data.data._id, responseJSON[0].movie);
+        console.log('both movie id are same');
+        actualfetchingMovie[responseJSON[0].user] = [];
+      }
+
+      else{
+        console.log(data.data._id, responseJSON[0].movie);
+        console.log('movie id are not same');
+      }
+
+      actualfetchingMovie[responseJSON[0].user].push(responseJSON)
+
+      console.log('actual movie data fetching ', actualfetchingMovie);
 
       if(responseJSON.hasOwnProperty(userData._id)){
         console.log('Yes it consists');
@@ -368,40 +385,25 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
         return acc.concat(arr);
       }, [])
 
-      // const separatedData = finalseatarray.reduce((acc, obj) => {
-      //   const key = `${obj.date}-${obj.time}`;
-      //   if (!acc[key]) {
-      //     acc[key] = {};
-      //   }
-      //   if (!acc[key][obj.connectionNo]) {
-      //     acc[key][obj.connectionNo] = [];
-      //   }
-      //   acc[key][obj.connectionNo].push(obj);
-      //   return acc;
-      // }, {});
-
-      // let newarray = [];
-      // for(let i = 0; i < finalseatarray.length; i++){
-      //   if(finalseatarray[i].connectionNo === 'thirdconnection'){
-      //     newarray[i] = finalseatarray[i];        }
-      // }
-
-      // console.log(newarray);
-
-      // console.log('from backend', separatedData);
-
       // const filterdata = finalseatarray.filter(x => x.date === filmDetails.date);
       // console.log('filter', newarray);
-      setSocketResponse(finalseatarray);
-    
-      
+      setSocketResponse([...socketResponse, finalseatarray]);
     })
-
-
     return () => {
       socket.disconnect();
     }
-  }, [setSocketResponse])
+  }, [setSocketResponse]);
+
+  const separatedData = socketResponse.reduce((acc, obj) => {
+    const key = `${obj.movie}`;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+
+  console.log('from backend', separatedData);
 
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);
@@ -574,7 +576,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
        `} 
         onClick={() => {
         handleClickSeat(i, cl)
-        socketFunction(cl, userData._id, filmSchedule.date, filmSchedule.time)
+        socketFunction(cl, userData._id, filmSchedule.date, filmSchedule.time, filmDetails.data._id)
         }}>
         {cl}
         </div>))}

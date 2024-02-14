@@ -123,7 +123,7 @@ function Button({cube}){
 
 
 
-function Timing({cubedetails}){
+function Timing({cubedetails, moviedata}){
   const { setUserData } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [timingOpen, setTimingOpen] = useState(false);
@@ -241,7 +241,7 @@ function Timing({cubedetails}){
         {timing.length > 0 ? timing.map((cl, i) => <li key={i} className="timing" onClick={() => openModal(cl)}>{cl}</li>) : <p>No more shows for today. All shows are booked.</p>}
       </div>
 }
-        <ModalOpen isOpen={isOpen} onClose={closeModal} filmSchedule={filmSchedule} cube={cubedetails} />
+        <ModalOpen isOpen={isOpen} onClose={closeModal} filmSchedule={filmSchedule} cube={cubedetails} moviedata={moviedata} />
     </div>
   )
 }
@@ -281,7 +281,7 @@ function socketFunction(cl, userdetails, date, time, filmDetails){
 }
 
 
-function ModalOpen({isOpen, onClose, filmSchedule, cube}){
+function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
   const [getCheckSeatAvailability] = useGetCheckSeatAvailabilityMutation();
   const redirect = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState([]);
@@ -293,7 +293,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
   const [bookSeat] = useBookSeatMutation();
   const [socketResponse, setSocketResponse] = useState([]);
 
- console.log('film details', filmDetails);
+ console.log('film details', moviedata);
 
   if(cube.cube === 'CUBE 1'){
     connectionNo('connection1');
@@ -348,7 +348,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     //   socketconn = fetchingSocketData('connection3')
     // }
 
-    let actualfetchingMovie = [];
+    let actualfetchingMovie = {};
 
     if(data){
       setUserData([data.data][0]);
@@ -358,30 +358,31 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
 
       console.log('response movie data is', responseJSON);
 
-      if(filmDetails.data?._id || data.data._id === responseJSON[0].movie){
-        console.log(data.data._id, responseJSON[0].movie);
+      if(moviedata?._id === responseJSON[0].movie){
+        console.log(moviedata._id, responseJSON[0].movie);
         console.log('both movie id are same');
         actualfetchingMovie[responseJSON[0].user] = [];
+        actualfetchingMovie[responseJSON[0].user].push(...responseJSON)
       }
 
       else{
-        console.log(data.data._id, responseJSON[0].movie);
+        console.log(moviedata?._id, responseJSON[0].movie);
         console.log('movie id are not same');
       }
 
-      actualfetchingMovie[responseJSON[0].user].push(responseJSON)
+     
 
       console.log('actual movie data fetching ', actualfetchingMovie);
 
-      if(responseJSON.hasOwnProperty(userData._id)){
+      if(actualfetchingMovie.hasOwnProperty(userData._id)){
         console.log('Yes it consists');
-        delete responseJSON[userData._id];
+        delete actualfetchingMovie[userData._id];
       }
       else{
         console.log("not consisted");
       }
 
-      const finalseatarray = Object.values(responseJSON).reduce((acc, arr) => {
+      const finalseatarray = Object.values(actualfetchingMovie).reduce((acc, arr) => {
         return acc.concat(arr);
       }, [])
 
@@ -394,16 +395,16 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube}){
     }
   }, [setSocketResponse]);
 
-  const separatedData = socketResponse.reduce((acc, obj) => {
-    const key = `${obj.movie}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc;
-  }, {});
+  // const separatedData = socketResponse.reduce((acc, obj) => {
+  //   const key = `${obj.movie}`;
+  //   if (!acc[key]) {
+  //     acc[key] = [];
+  //   }
+  //   acc[key].push(obj);
+  //   return acc;
+  // }, {});
 
-  console.log('from backend', separatedData);
+  // console.log('from backend', separatedData);
 
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);

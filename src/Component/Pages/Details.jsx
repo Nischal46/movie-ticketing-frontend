@@ -408,7 +408,29 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
 
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);
+  console.log(typeof socketResponse);
+// Assuming socketResponse is an array of objects
+const final = socketResponse.map(obj => {
+  return obj.map(cl => {
+    return [cl.action]
+  })
+});
+console.log('the final socket response is', final);
 
+const mergedOutput = final.reduce((acc, curr) => {
+  return acc.concat(curr);
+}, []);
+
+// Use Set to eliminate duplicates and convert back to array
+const uniqueOutput = Array.from(new Set(mergedOutput));
+
+console.log(uniqueOutput);
+
+
+// console.log(mergeoutput);
+
+
+ 
   if (!isOpen) {
     return null;
   }
@@ -573,7 +595,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
         className={`seat 
         ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} 
         ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}
-        ${socketResponse.includes(cl) ? 'seatalcurrentlyselected' : 'seatbooked'}
+        ${socketResponse.flatMap(obj => obj.action).includes(cl) ? 'seatalcurrentlyselected' : 'seatbooked'}
        `} 
         onClick={() => {
         handleClickSeat(i, cl)
@@ -598,3 +620,4 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
 }
 // ${socketResponse.length > 0 ? socketResponse[0]?.includes(cl) ? socketResponse[1] === userData._id ? 'seatbooked' : 'seatalcurrentlyselected' : 'seatavailable' : 'seatavailable'}
 export default Details;
+

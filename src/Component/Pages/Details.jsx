@@ -101,7 +101,6 @@ function Booking({cubeid, moviedata}){
       {cubeid === 3 && <Button cube ='CUBE 3' /> }
 
     <Timing cubedetails={cube} moviedata={moviedata} />
-      
     </div>
   )
 }
@@ -129,6 +128,7 @@ function Timing({cubedetails, moviedata}){
   const [timingOpen, setTimingOpen] = useState(false);
   const [timing, setTiming] = useState([]);
   const {filmSchedule, setFilmSchedule} = useContext(UserContext);
+  const {seatArray, setSeatArray} = useContext(UserContext);
   const [activeIndex, setActiveIndex] = useState(null);
 
 
@@ -182,8 +182,6 @@ function Timing({cubedetails, moviedata}){
     let newMonth = currentMonth;
     let newYear = currentYear;
 
-    let count = 0
-    // Check if the new day exceeds the number of days in the current month
     if (newDay > new Date(newYear, newMonth + 1, 0).getDate()) {
       newDay = 0;
       newMonth += 1;
@@ -208,11 +206,11 @@ function Timing({cubedetails, moviedata}){
   }
 
   const closeModal = () => {
-    setIsOpen(false)
+    setIsOpen(false);
+    setSeatArray([]);
   }
 
   const openTimingModal = (cl, date) => {
-    console.log('selected data is', date);
     setTimingOpen(true);
     let today;
     today = cl.split(' ')[1];
@@ -250,15 +248,6 @@ function Timing({cubedetails, moviedata}){
 
 let socket;
 
-// function fetchingSocketData(conn){
-//   return io.connect(`http://localhost:8000/${conn}`);
-// }
-// let socket1 = io.connect('http://localhost:8000/connection1');
-// let socket2 = io.connect('http://localhost:8000/connection2');
-// let socket3 = io.connect('http://localhost:8000/connection3');
-
-// const socket = io.connect('http://localhost:8000/'); 
-
 function connectionNo(conn){
    socket = io.connect(`http://localhost:8000/${conn}`);
   console.log(`http://localhost:8000/${conn}`);
@@ -267,11 +256,9 @@ function connectionNo(conn){
 let seatarray = [];
 
 function socketFunction(cl, userdetails, date, time, filmDetails){
-  console.log(cl, userdetails, date, time, filmDetails)
+
   if(!seatarray.includes(cl)){
     seatarray.push(cl);
- // setSelectedSeats(res => [...res, seatno])
-//  socket.emit('recordAction', { action: seatarray });
   }
   else{
     seatarray = seatarray.filter(x => x !== cl)
@@ -293,7 +280,7 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
   const [bookSeat] = useBookSeatMutation();
   const [socketResponse, setSocketResponse] = useState([]);
 
- console.log('film details', moviedata);
+  // optional
 
   if(cube.cube === 'CUBE 1'){
     connectionNo('connection1');
@@ -338,16 +325,6 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
 
     let socketconn = io.connect(`http://localhost:8000/`);
 
-    // if(cube.cube === 'CUBE 1'){
-    //   socketconn = fetchingSocketData('connection1')
-    // }
-    // else if(cube.cube === 'CUBE 2'){
-    //   socketconn = fetchingSocketData('connection2')
-    // }
-    // else {
-    //   socketconn = fetchingSocketData('connection3')
-    // }
-
     let actualfetchingMovie = {};
 
     if(data){
@@ -359,18 +336,10 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
       console.log('response movie data is', responseJSON);
 
       if(moviedata?._id === responseJSON[0].movie){
-        console.log(moviedata._id, responseJSON[0].movie);
         console.log('both movie id are same');
         actualfetchingMovie[responseJSON[0].user] = [];
         actualfetchingMovie[responseJSON[0].user].push(...responseJSON)
       }
-
-      else{
-        console.log(moviedata?._id, responseJSON[0].movie);
-        console.log('movie id are not same');
-      }
-
-     
 
       console.log('actual movie data fetching ', actualfetchingMovie);
 
@@ -386,8 +355,6 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
         return acc.concat(arr);
       }, [])
 
-      // const filterdata = finalseatarray.filter(x => x.date === filmDetails.date);
-      // console.log('filter', newarray);
       setSocketResponse([...socketResponse, finalseatarray]);
     })
     return () => {
@@ -409,25 +376,18 @@ function ModalOpen({isOpen, onClose, filmSchedule, cube, moviedata}){
   console.log('socket response is ', socketResponse);
   // console.log('the socket response from user id is ', socketResponse[1]);
   console.log(typeof socketResponse);
-// Assuming socketResponse is an array of objects
+
 const final = socketResponse.map(obj => {
-  return obj.map(cl => {
-    return [cl.action]
-  })
+  return [].concat(...obj.map(cl => cl.action));
 });
 console.log('the final socket response is', final);
 
-const mergedOutput = final.reduce((acc, curr) => {
-  return acc.concat(curr);
-}, []);
-
-// Use Set to eliminate duplicates and convert back to array
-const uniqueOutput = Array.from(new Set(mergedOutput));
+// Flatten the array of arrays into a single array
+const uniqueOutput = [].concat(...final);
 
 console.log(uniqueOutput);
 
 
-// console.log(mergeoutput);
 
 
  
@@ -595,7 +555,7 @@ console.log(uniqueOutput);
         className={`seat 
         ${selectedIndex.includes(i) ? 'seatbooked' : 'seatavailable'} 
         ${fakeseat?.includes(cl) ? 'seatalreadyreserved' : ''}
-        ${socketResponse.flatMap(obj => obj.action).includes(cl) ? 'seatalcurrentlyselected' : 'seatbooked'}
+        ${uniqueOutput.includes(cl) ? 'seatalcurrentlyselected' : 'seatbooked'}
        `} 
         onClick={() => {
         handleClickSeat(i, cl)
@@ -620,4 +580,5 @@ console.log(uniqueOutput);
 }
 // ${socketResponse.length > 0 ? socketResponse[0]?.includes(cl) ? socketResponse[1] === userData._id ? 'seatbooked' : 'seatalcurrentlyselected' : 'seatavailable' : 'seatavailable'}
 export default Details;
+
 
